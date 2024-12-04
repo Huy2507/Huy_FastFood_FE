@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { getFullUrl } from "../../../services/api/axiosInstance.js";
-import { listBanner } from "../../../services/customerService/listBanner.jsx"; // Import axios instance
+import { ListBanner } from "../../../services/customerService/Home.jsx";
+
+// Import Swiper.js
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const BannerList = () => {
     const [banners, setBanners] = useState([]);
@@ -9,28 +16,42 @@ const BannerList = () => {
     useEffect(() => {
         const fetchBanners = async () => {
             try {
-                const data = await listBanner(); // Đợi kết quả từ API
-                setBanners(data); // Cập nhật danh sách banners
+                const data = await ListBanner();
+                setBanners(data);
             } catch (error) {
-                console.log(error.message); // Lưu lỗi nếu xảy ra
+                console.log(error.message);
             }
         };
-        fetchBanners(); // Gọi hàm lấy dữ liệu khi component được mount
+        fetchBanners();
     }, []);
 
     return (
-        <div className="banner-container">
-            {banners.map((banner) => (
-                <div key={banner.id} className="banner-item">
-                    <img
-                        src={getFullUrl(banner.bannerImg)}
-                        alt={banner.title || "Banner"}
-                        className="banner-img"
-                    />
-                    {banner.title && <h2>{banner.title}</h2>}
-                    {banner.description && <p>{banner.description}</p>}
-                </div>
-            ))}
+        <div className="banner-container w-full">
+            <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                navigation
+                pagination={{ clickable: true }}
+                autoplay={{
+                    delay: 3000, // Thời gian giữa các slide (ms)
+                    disableOnInteraction: false, // Tiếp tục autoplay ngay cả khi người dùng tương tác
+                }}
+                loop={banners.length > 1} // Bật loop nếu có nhiều hơn 1 banner
+                slidesPerView={1}
+                slidesPerGroup={1}
+                className="w-full" // Swiper class
+            >
+                {banners.length > 0
+                    ? banners.map((banner) => (
+                          <SwiperSlide key={banner.id} className="w-full">
+                              <img
+                                  src={getFullUrl(banner.bannerImg)}
+                                  alt={banner.title || "Banner"}
+                                  className="h-auto w-full object-cover" // Tailwind classes for responsive images
+                              />
+                          </SwiperSlide>
+                      ))
+                    : null}
+            </Swiper>
         </div>
     );
 };
