@@ -90,8 +90,8 @@ function FoodDetails({ id, onClose }) {
 
 // Kiểm tra kiểu dữ liệu của props
 FoodDetails.propTypes = {
-    id: PropTypes.number.isRequired,
-    onClose: PropTypes.func.isRequired,
+    id: PropTypes.number,
+    onClose: PropTypes.func,
 };
 
 export default FoodDetails;
