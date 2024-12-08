@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { ListCategoryApi } from "../../../services/customerService/Home.jsx";
 
@@ -6,6 +7,8 @@ function ListCategory() {
     const [categories, setCategories] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+
+    const navigate = useNavigate(); // Khai báo useNavigate
 
     // Hàm lấy dữ liệu danh mục từ API với phân trang
     const fetchCategories = async (page = 1) => {
@@ -30,6 +33,11 @@ function ListCategory() {
         }
     };
 
+    // Hàm điều hướng đến menu khi click vào danh mục
+    const handleCategoryClick = (slug) => {
+        navigate(`/menu/${slug}`); // Điều hướng với query parameter
+    };
+
     return (
         <div className="container mx-auto p-4">
             <div className="flex items-center justify-center">
@@ -41,8 +49,9 @@ function ListCategory() {
                 {categories.map((category) => (
                     <div
                         title={category.seoTitle}
-                        key={category.categoryId} // Thay đổi từ category.id sang category.categoryId
+                        key={category.categoryId}
                         className="cursor-pointer rounded-lg bg-white p-4 shadow-lg transition duration-300 hover:shadow-xl"
+                        onClick={() => handleCategoryClick(category.slug)} // Gọi hàm điều hướng khi click
                     >
                         <img
                             src={getFullUrl(category.imgUrl)}

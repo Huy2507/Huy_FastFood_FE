@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { FavoriteFoodApi } from "../../../services/customerService/Home.jsx";
+import FoodDetails from "../menu/FoodDetails.jsx";
 
 function FavoriteFood() {
     const [favoriteFoods, setFavoriteFoods] = useState([]);
+    const [selectedFoodId, setSelectedFoodId] = useState(null);
 
     useEffect(() => {
         const fetchFavoriteFoods = async () => {
@@ -29,6 +31,7 @@ function FavoriteFood() {
                     <div
                         key={favoriteFood.foodId}
                         className="group relative flex h-auto max-h-60 flex-row overflow-hidden rounded-lg border border-solid border-yellow-500 bg-white shadow-lg hover:shadow-xl md:flex-col"
+                        onClick={() => setSelectedFoodId(favoriteFood.foodId)}
                     >
                         {/* Hình ảnh hiển thị trước */}
                         <div className="group relative flex h-auto max-h-56 min-h-24 w-1/3 cursor-pointer items-center justify-center overflow-hidden rounded-t-lg shadow-lg md:h-auto md:w-full md:rounded-l-lg lg:rounded-t-lg">
@@ -47,7 +50,7 @@ function FavoriteFood() {
                                 <h2 className="text-lg font-semibold">
                                     {favoriteFood.name}
                                 </h2>
-                                <p className="line-clamp-3 overflow-hidden pb-3 text-gray-500">
+                                <p className="line-clamp-2 overflow-hidden pb-3 text-gray-500">
                                     {favoriteFood.description ||
                                         "Không có mô tả"}
                                 </p>
@@ -61,7 +64,7 @@ function FavoriteFood() {
                                 <h2 className="text-lg font-semibold">
                                     {favoriteFood.name}
                                 </h2>
-                                <p className="line-clamp-3 text-gray-500">
+                                <p className="line-clamp-2 text-gray-500">
                                     {favoriteFood.description ||
                                         "Không có mô tả"}
                                 </p>
@@ -73,6 +76,13 @@ function FavoriteFood() {
                         </div>
                     </div>
                 ))}
+                {/* Hiển thị modal khi có món ăn được chọn */}
+                {selectedFoodId && (
+                    <FoodDetails
+                        id={selectedFoodId}
+                        onClose={() => setSelectedFoodId(null)}
+                    />
+                )}
             </div>
         </div>
     );

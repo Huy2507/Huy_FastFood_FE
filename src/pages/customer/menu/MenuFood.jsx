@@ -1,11 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom"; // Dùng để lấy tham số từ URL
 import { getFullUrl } from "../../../services/api/axiosInstance";
+import { AddToCartApi } from "../../../services/customerService/Cart";
 import { MenuApi } from "../../../services/customerService/Menu";
+import FoodDetails from "./FoodDetails";
 
 function MenuFood() {
+    const { slug } = useParams(); // Lấy tham số slug từ URL
     const [foodsByCategory, setFoodsByCategory] = useState([]); // Danh sách món ăn theo danh mục
     const [popularFoods, setPopularFoods] = useState([]); // Danh sách món ăn phổ biến
     const [searchTerm, setSearchTerm] = useState(""); // Tìm kiếm
+    const [selectedFoodId, setSelectedFoodId] = useState(null);
+    const categoryRefs = useRef({}); // Lưu tham chiếu của mỗi phần danh mục
+    const navigate = useNavigate();
 
     const fetchMenuFood = async () => {
         try {
@@ -44,6 +51,69 @@ function MenuFood() {
         fetchMenuFood();
     }, [searchTerm]);
 
+    // Hàm để cuộn đến phần danh mục khi URL chứa slug
+    useEffect(() => {
+        if (slug) {
+            // Kiểm tra xem slug có trùng với slug trong URL không
+            const category = foodsByCategory.find(
+                (cat) => cat.category.slug.toLowerCase() === slug.toLowerCase(), // Sử dụng slug thay vì categoryName
+            );
+            if (
+                category &&
+                categoryRefs.current[category.category.categoryId]
+            ) {
+                // Cuộn đến phần danh mục đó
+                categoryRefs.current[
+                    category.category.categoryId
+                ].scrollIntoView({
+                    behavior: "smooth",
+                    block: "start", // Cuộn đến vị trí đầu của phần danh mục
+                });
+            }
+        }
+    }, [foodsByCategory]);
+
+    // Cập nhật URL khi cuộn đến danh mục
+    useEffect(() => {
+        const handleScroll = () => {
+            // Lấy phần tử của "Món ăn phổ biến"
+            const popularFoodsElement =
+                document.getElementById("popular-foods");
+            if (popularFoodsElement) {
+                const rect = popularFoodsElement.getBoundingClientRect();
+                if (
+                    rect.top <= window.innerHeight / 2 &&
+                    rect.bottom >= window.innerHeight / 2
+                ) {
+                    // Nếu đang ở phần "Món ăn phổ biến", cập nhật URL thành `/menu`
+                    navigate("/menu");
+                    return; // Thoát ra vì không cần kiểm tra các danh mục khác
+                }
+            }
+
+            // Kiểm tra các danh mục món ăn
+            foodsByCategory.forEach((category) => {
+                const categoryElement =
+                    categoryRefs.current[category.category.categoryId];
+                if (categoryElement) {
+                    const rect = categoryElement.getBoundingClientRect();
+                    if (
+                        rect.top <= window.innerHeight / 2 &&
+                        rect.bottom >= window.innerHeight / 2
+                    ) {
+                        // Cập nhật URL với slug của danh mục
+                        navigate(`/menu/${category.category.slug}`);
+                    }
+                }
+            });
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [foodsByCategory, navigate]);
+
     return (
         <div className="container mx-auto p-4">
             {/* Input tìm kiếm */}
@@ -55,7 +125,7 @@ function MenuFood() {
                 className="mb-4 rounded border p-2"
             />
             {/* Món ăn phổ biến */}
-            <div className="mb-8">
+            <div id="popular-foods" className="mb-8">
                 <h2 className="mb-4 text-2xl font-bold text-teal-700">
                     Món ăn phổ biến
                 </h2>
@@ -64,13 +134,14 @@ function MenuFood() {
                         <div
                             key={food.foodId}
                             className="flex cursor-pointer flex-row items-center rounded-lg border border-solid border-yellow-500 shadow-xl md:flex-col"
+                            onClick={() => setSelectedFoodId(food.foodId)}
                         >
                             <img
                                 src={getFullUrl(food.imageUrl)}
                                 alt={food.name}
                                 className="mb-2 h-36 w-1/3 rounded-lg object-cover md:h-44 md:w-full"
                             />
-                            <div className="flex w-2/3 flex-col pl-3 text-left md:w-full md:text-center">
+                            <div className="flex w-2/3 flex-col p-1 pl-3 text-left md:w-full md:pl-1 md:text-center">
                                 <h3 className="text-lg font-bold">
                                     {food.name}
                                 </h3>
@@ -80,14 +151,38 @@ function MenuFood() {
                                 <p className="p-2 text-right font-bold text-gray-600 md:text-center">
                                     {food.price.toLocaleString("vi-VN")} VND
                                 </p>
-                                <button className="pb-2">Thêm</button>
+                                <button
+                                    className="rounded bg-teal-500 px-4 py-2 pb-2 text-white hover:bg-teal-600 md:rounded-b"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        AddToCartApi(food.foodId, 1);
+                                    }}
+                                >
+                                    Thêm vào giỏ hàng
+                                </button>
                             </div>
                         </div>
                     ))}
+                    {/* Hiển thị modal khi có món ăn được chọn */}
+                    {selectedFoodId && (
+                        <FoodDetails
+                            id={selectedFoodId}
+                            onClose={() => setSelectedFoodId(null)}
+                        />
+                    )}
                 </div>
             </div>
+
+            {/* Các danh mục món ăn */}
             {foodsByCategory.map((category) => (
-                <div key={category.category.categoryId} className="mb-12">
+                <div
+                    key={category.category.categoryId}
+                    className="mb-12"
+                    ref={(el) =>
+                        (categoryRefs.current[category.category.categoryId] =
+                            el)
+                    } // Gán tham chiếu cho mỗi danh mục
+                >
                     <h2 className="mb-4 text-2xl font-bold text-teal-700">
                         {category.category.categoryName}
                     </h2>
@@ -96,13 +191,14 @@ function MenuFood() {
                             <div
                                 key={food.foodId}
                                 className="flex cursor-pointer flex-row items-center rounded-lg border border-solid border-yellow-500 shadow-xl md:flex-col"
+                                onClick={() => setSelectedFoodId(food.foodId)}
                             >
                                 <img
                                     src={getFullUrl(food.imageUrl)}
                                     alt={food.name}
                                     className="mb-2 h-36 w-1/3 rounded-t-lg object-cover md:h-44 md:w-full"
                                 />
-                                <div className="flex w-2/3 flex-col pl-3 text-left md:w-full md:text-center">
+                                <div className="flex w-2/3 flex-col p-1 pl-3 text-left md:w-full md:pl-1 md:text-center">
                                     <h3 className="text-left text-lg font-bold md:text-center">
                                         {food.name}
                                     </h3>
@@ -112,15 +208,29 @@ function MenuFood() {
                                     <p className="p-2 text-right font-bold text-gray-600 md:text-center">
                                         {food.price.toLocaleString("vi-VN")} VND
                                     </p>
-                                    <button className="pb-2">Thêm</button>
+                                    <button
+                                        className="rounded bg-teal-500 px-4 py-2 pb-2 text-white hover:bg-teal-600 md:rounded-b"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            AddToCartApi(food.foodId, 1);
+                                        }}
+                                    >
+                                        Thêm vào giỏ hàng
+                                    </button>
                                 </div>
                             </div>
                         ))}
+                        {selectedFoodId && (
+                            <FoodDetails
+                                id={selectedFoodId}
+                                onClose={() => setSelectedFoodId(null)}
+                            />
+                        )}
                     </div>
 
                     {category.pagination.totalPages > 1 && (
                         <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                            {/* Nút "Trang trước" */}
+                            {/* Các nút phân trang */}
                             <button
                                 onClick={() =>
                                     handlePageChange(
@@ -134,7 +244,6 @@ function MenuFood() {
                                 Trước
                             </button>
 
-                            {/* Nút cho từng trang */}
                             {Array.from(
                                 { length: category.pagination.totalPages },
                                 (_, index) => (
@@ -152,17 +261,12 @@ function MenuFood() {
                                                 ? "bg-teal-500 font-bold text-white"
                                                 : "bg-gray-200 hover:bg-teal-200"
                                         }`}
-                                        disabled={
-                                            category.pagination.currentPage ===
-                                            index + 1
-                                        }
                                     >
                                         {index + 1}
                                     </button>
                                 ),
                             )}
 
-                            {/* Nút "Trang sau" */}
                             <button
                                 onClick={() =>
                                     handlePageChange(
