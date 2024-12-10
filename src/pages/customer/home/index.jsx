@@ -1,3 +1,5 @@
+import { memo } from "react";
+import Footer from "../../../components/footer";
 import BannerList from "./BannerList";
 import FavoriteFood from "./FavoriteFood";
 import ListCategory from "./ListCategory";
@@ -10,8 +12,9 @@ function Home() {
             <RecentFoods />
             <ListCategory />
             <FavoriteFood />
+            <Footer />
         </div>
     );
 }
 
-export default Home;
+export default memo(Home);

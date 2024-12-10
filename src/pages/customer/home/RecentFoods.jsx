@@ -39,7 +39,6 @@ function RecentFoods() {
                     setLoading(true);
                     const data = await RecentFoodsApi();
                     setRecentFoods(data.data);
-                    console.log(data.data);
                 }
             } catch (err) {
                 toast.error(err.message);
