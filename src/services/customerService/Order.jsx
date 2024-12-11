@@ -15,3 +15,14 @@ export const CreateOrderApi = async (addressId, note) => {
             : { message: "Đã xảy ra lỗi" };
     }
 };
+
+export const GetCustomerOrdersApi = async () => {
+    try {
+        const response = await axiosInstance.get("/Order/orders");
+        return response.data;
+    } catch (error) {
+        throw error.response
+            ? error.response.data
+            : { message: "Đã xảy ra lỗi" };
+    }
+};
