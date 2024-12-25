@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Footer from "../../../components/footer";
+import Navbar from "../../../components/Navbar";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { GetAddressesApi } from "../../../services/customerService/Address";
 import {
@@ -120,6 +121,7 @@ function Cart() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Navbar />
             <div className="container mx-auto flex flex-col p-4 md:flex-row">
                 <div className="w-full md:mr-6 md:w-1/3">
                     <h1 className="mb-6 text-2xl font-bold text-teal-700">
@@ -300,6 +302,7 @@ function Cart() {
                                             selectedAddress.id,
                                             note,
                                         );
+                                        updateCart();
                                     }
                                 }}
                             >

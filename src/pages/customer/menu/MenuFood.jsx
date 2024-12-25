@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // Dùng để lấy tham số từ URL
+import { useNavigate, useParams } from "react-router-dom"; //
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { AddToCartApi } from "../../../services/customerService/Cart";
 import { MenuApi } from "../../../services/customerService/Menu";
 import FoodDetails from "./FoodDetails";
 
 function MenuFood() {
-    const { slug } = useParams(); // Lấy tham số slug từ URL
-    const [foodsByCategory, setFoodsByCategory] = useState([]); // Danh sách món ăn theo danh mục
-    const [popularFoods, setPopularFoods] = useState([]); // Danh sách món ăn phổ biến
-    const [searchTerm, setSearchTerm] = useState(""); // Tìm kiếm
+    const { slug } = useParams();
+    const [foodsByCategory, setFoodsByCategory] = useState([]);
+    const [popularFoods, setPopularFoods] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const [selectedFoodId, setSelectedFoodId] = useState(null);
-    const categoryRefs = useRef({}); // Lưu tham chiếu của mỗi phần danh mục
+    const categoryRefs = useRef({});
     const navigate = useNavigate();
 
     const fetchMenuFood = async () => {
@@ -73,10 +73,8 @@ function MenuFood() {
         }
     }, [foodsByCategory]);
 
-    // Cập nhật URL khi cuộn đến danh mục
     useEffect(() => {
         const handleScroll = () => {
-            // Lấy phần tử của "Món ăn phổ biến"
             const popularFoodsElement =
                 document.getElementById("popular-foods");
             if (popularFoodsElement) {
@@ -85,13 +83,11 @@ function MenuFood() {
                     rect.top <= window.innerHeight / 2 &&
                     rect.bottom >= window.innerHeight / 2
                 ) {
-                    // Nếu đang ở phần "Món ăn phổ biến", cập nhật URL thành `/menu`
                     navigate("/menu");
-                    return; // Thoát ra vì không cần kiểm tra các danh mục khác
+                    return;
                 }
             }
 
-            // Kiểm tra các danh mục món ăn
             foodsByCategory.forEach((category) => {
                 const categoryElement =
                     categoryRefs.current[category.category.categoryId];

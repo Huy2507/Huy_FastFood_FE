@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Footer from "../../../components/footer";
+import Navbar from "../../../components/Navbar";
 import { ChangePasswordApi } from "../../../services/customerService/MyAccount";
 import Sidebar from "./Sidebar";
 
@@ -70,6 +71,7 @@ function ChangePassword() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Navbar />
             <div className={`flex flex-grow ${isMobile ? "flex-col" : ""}`}>
                 {/* Sidebar for Desktop and Mobile */}
                 {showSidebar && !isMobile && (

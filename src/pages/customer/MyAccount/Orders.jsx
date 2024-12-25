@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Footer from "../../../components/footer";
+import Navbar from "../../../components/Navbar";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { GetCustomerOrdersApi } from "../../../services/customerService/Order";
 import Sidebar from "./Sidebar";
@@ -8,17 +9,16 @@ import Sidebar from "./Sidebar";
 function Orders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [expandedOrderId, setExpandedOrderId] = useState(null); // Đơn hàng đang mở rộng
+    const [expandedOrderId, setExpandedOrderId] = useState(null);
     const [activeButton, setActiveButton] = useState("orders");
     const [isMobile, setIsMobile] = useState(false);
     const [showSidebar, setShowSidebar] = useState(true);
 
     useEffect(() => {
-        // Xử lý thay đổi kích thước màn hình
         const handleResize = () => {
             const mobileView = window.innerWidth <= 640;
             setIsMobile(mobileView);
-            if (!mobileView) setShowSidebar(true); // Hiển thị Sidebar trên màn hình lớn
+            if (!mobileView) setShowSidebar(true);
         };
 
         handleResize();
@@ -32,6 +32,7 @@ function Orders() {
         try {
             const response = await GetCustomerOrdersApi();
             setOrders(response.data || []); // Đảm bảo orders luôn là mảng
+            console.log(response.data);
         } catch (error) {
             toast.error(
                 error.response?.data?.message ||
@@ -61,6 +62,7 @@ function Orders() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Navbar />
             <div className={`flex flex-grow ${isMobile ? "flex-col" : ""}`}>
                 {showSidebar && !isMobile && (
                     <Sidebar
@@ -118,7 +120,9 @@ function Orders() {
                                         Tổng tiền:{" "}
                                         {order.totalPrice.toLocaleString()} VNĐ
                                     </p>
-
+                                    <p className="text-gray-600">
+                                        Ghi chú: {order.note}
+                                    </p>
                                     {expandedOrderId === order.orderId && (
                                         <div className="mt-4">
                                             <h4 className="mb-2 font-semibold text-gray-700">
@@ -187,6 +191,9 @@ function Orders() {
                                         <th className="border px-4 py-2 text-left">
                                             Tổng tiền
                                         </th>
+                                        <th className="border px-4 py-2 text-left">
+                                            Ghi chú
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -223,6 +230,9 @@ function Orders() {
                                                     {order.totalPrice.toLocaleString()}{" "}
                                                     VNĐ
                                                 </td>
+                                                <td className="border px-4 py-2">
+                                                    {order.note}
+                                                </td>
                                             </tr>
 
                                             {/* Hàng hiển thị chi tiết sản phẩm (nếu mở rộng) */}
@@ -230,7 +240,7 @@ function Orders() {
                                                 order.orderId && (
                                                 <tr>
                                                     <td
-                                                        colSpan="5"
+                                                        colSpan="6"
                                                         className="border px-4 py-2"
                                                     >
                                                         <div className="overflow-hidden transition-all duration-300 ease-in-out">

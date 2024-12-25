@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DarkModeToggle from "./DarkModeToggle";
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -19,6 +21,10 @@ const Navbar = () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    const handleToggle = () => {
+        setIsDarkMode((prevMode) => !prevMode);
+    };
 
     return (
         <nav className="flex items-center justify-between bg-red-600 px-4 py-2 text-2xl text-white">
@@ -62,6 +68,10 @@ const Navbar = () => {
                         >
                             Order Now
                         </Link>
+                        <DarkModeToggle
+                            isDarkMode={isDarkMode}
+                            onToggle={handleToggle}
+                        />
                     </ul>
                 </div>
             </div>

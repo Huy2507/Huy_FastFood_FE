@@ -1,41 +1,92 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import Auth from "../pages/auth";
-import ForgotPassword from "../pages/auth/ForgotPassword";
-import ResetPassword from "../pages/auth/ResetPassword";
-import VerifyResetCode from "../pages/auth/VerifyResetCode";
-import Cart from "../pages/customer/cart/Cart";
-import Home from "../pages/customer/home";
-import Menu from "../pages/customer/menu";
-import FoodDetails from "../pages/customer/menu/FoodDetails";
-import Addresses from "../pages/customer/MyAccount/Addresses";
-import ChangePassword from "../pages/customer/MyAccount/ChangePassword";
-import MyAccount from "../pages/customer/MyAccount/MyAccount";
-import Orders from "../pages/customer/MyAccount/Orders";
+import ForbiddenPage from "../components/ForbiddenPage";
+import NotFoundPage from "../components/NotFoundPage";
+import AdminFood from "../pages/admin/AdminFood/AdminFood";
+import AdminLayout from "../pages/admin/AdminLayout";
+import ProtectedRoute from "./ProtectedRoute";
+
+const Auth = lazy(() => import("../pages/auth"));
+const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("../pages/auth/ResetPassword"));
+const VerifyResetCode = lazy(() => import("../pages/auth/VerifyResetCode"));
+const Cart = lazy(() => import("../pages/customer/cart/Cart"));
+const Home = lazy(() => import("../pages/customer/home"));
+const Menu = lazy(() => import("../pages/customer/menu"));
+const FoodDetails = lazy(() => import("../pages/customer/menu/FoodDetails"));
+const Addresses = lazy(() => import("../pages/customer/MyAccount/Addresses"));
+const ChangePassword = lazy(
+    () => import("../pages/customer/MyAccount/ChangePassword"),
+);
+const MyAccount = lazy(() => import("../pages/customer/MyAccount/MyAccount"));
+const Orders = lazy(() => import("../pages/customer/MyAccount/Orders"));
+// const NotFound = lazy(() => import("../pages/NotFound"));
 
 const AppRouter = () => {
     return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/menu/:slug" element={<Menu />} />
-            <Route path="/menu/:id" element={<FoodDetails />} />
-            <Route path="/my-account" element={<MyAccount />} />
+        <Suspense fallback={<div className="h-full w-screen">Đang tải...</div>}>
+            <Routes>
+                {/* Trang chủ */}
+                <Route path="/" element={<Home />} />
 
-            <Route path="/my-account/edit-info" element={<MyAccount />} />
-            <Route
-                path="/my-account/change-password"
-                element={<ChangePassword />}
-            />
-            <Route path="/my-account/addresses" element={<Addresses />} />
-            <Route path="/my-account/orders" element={<Orders />} />
+                {/* Menu */}
+                <Route path="/menu">
+                    <Route index element={<Menu />} />
+                    <Route path=":id" element={<FoodDetails />} />
+                </Route>
 
-            <Route path="/cart" element={<Cart />} />
+                {/* Tài khoản */}
+                <Route path="/my-account">
+                    <Route index element={<MyAccount />} />
+                    <Route path="edit-info" element={<MyAccount />} />
+                    <Route
+                        path="change-password"
+                        element={<ChangePassword />}
+                    />
+                    <Route path="addresses" element={<Addresses />} />
+                    <Route path="orders" element={<Orders />} />
+                </Route>
 
-            <Route path="/login" element={<Auth />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/verify-reset-code" element={<VerifyResetCode />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-        </Routes>
+                {/* Giỏ hàng */}
+                <Route path="/cart" element={<Cart />} />
+
+                {/* Xác thực */}
+                <Route path="/login" element={<Auth />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route
+                    path="/verify-reset-code"
+                    element={<VerifyResetCode />}
+                />
+                <Route path="/reset-password" element={<ResetPassword />} />
+
+                {/* Admin Dashboard */}
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute
+                            element={AdminLayout}
+                            requiredRole="Admin"
+                        />
+                    }
+                >
+                    <Route index element={<div>Admin Dashboard</div>} />
+                    <Route path="statistic" element={<AdminFood />} />
+                    <Route path="food" element={<AdminFood />} />
+                    <Route path="category" element={<AdminFood />} />
+                    <Route path="banner" element={<AdminFood />} />
+                    <Route path="user" element={<AdminFood />} />
+                    <Route path="customer" element={<AdminFood />} />
+                    <Route path="employee" element={<AdminFood />} />
+                    <Route path="role" element={<AdminFood />} />
+                </Route>
+
+                {/* Forbidden Page */}
+                <Route path="/forbidden" element={<ForbiddenPage />} />
+
+                {/* Trang lỗi */}
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+        </Suspense>
     );
 };
 

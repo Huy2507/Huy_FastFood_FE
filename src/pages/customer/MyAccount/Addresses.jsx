@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Footer from "../../../components/footer";
+import Navbar from "../../../components/Navbar";
 import {
     DeleteAddressesApi,
     GetAddressesApi,
@@ -86,6 +87,7 @@ function Addresses() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Navbar />
             <div className={`flex flex-grow ${isMobile ? "flex-col" : ""}`}>
                 {showSidebar && !isMobile && (
                     <Sidebar

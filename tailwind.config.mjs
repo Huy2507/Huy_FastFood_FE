@@ -4,6 +4,7 @@ export default {
         "./index.html",
         "./src/**/*.{js,jsx,ts,tsx}", // Quét các file trong src folder
     ],
+    darkMode: "class",
     theme: {
         extend: {}, // Tùy chỉnh theme ở đây
     },

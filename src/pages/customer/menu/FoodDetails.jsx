@@ -21,7 +21,6 @@ function FoodDetails({ id, onClose }) {
         fetchFood();
     }, [id]);
 
-    // Hiển thị loading trong khi chờ dữ liệu
     if (!foodDetails) {
         return (
             <div className="modal">
@@ -88,7 +87,6 @@ function FoodDetails({ id, onClose }) {
     );
 }
 
-// Kiểm tra kiểu dữ liệu của props
 FoodDetails.propTypes = {
     id: PropTypes.number,
     onClose: PropTypes.func,
