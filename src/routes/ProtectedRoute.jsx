@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
+import Loading from "../components/Loading";
 import { useAuth } from "../pages/auth/useAuth"; // Đảm bảo đúng đường dẫn
 
 const ProtectedRoute = ({ element: Component, requiredRole }) => {
-    const { user, loading } = useAuth();
+    const { user, loading1 } = useAuth();
 
     // Hiển thị loading khi chưa xác định trạng thái user
-    if (loading) {
-        return <div>Loading...</div>;
+    if (loading1) {
+        return <Loading />;
     }
 
     // Chưa đăng nhập

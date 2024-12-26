@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -26,11 +27,31 @@ function Login() {
             if (data.refreshToken) {
                 localStorage.setItem("refreshToken", data.refreshToken);
             }
-            toast.success("Đăng nhập thành công");
-            // Điều hướng về trang Dashboard sau khi đăng nhập
-            navigate("/");
-        } catch (err) {
-            toast.error(err.message || "Đăng nhập thất bại");
+            // Decode token để lấy thông tin người dùng
+            const decodedToken = jwtDecode(data.accessToken);
+
+            // Lấy thông tin cần thiết từ token
+            const role =
+                decodedToken[
+                    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                ];
+            const userName =
+                decodedToken[
+                    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+                ];
+
+            // Hiển thị thông báo thành công
+            toast.success(`Xin chào ${userName}, đăng nhập thành công!`);
+            if (role === "Admin") {
+                navigate("/admin");
+            }
+
+            if (role === "Customer") {
+                navigate("/");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message || "Đăng nhập thất bại");
         } finally {
             setLoading(false);
         }

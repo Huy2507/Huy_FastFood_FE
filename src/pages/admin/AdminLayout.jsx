@@ -1,9 +1,9 @@
-import PropTypes from "prop-types"; // Import PropTypes
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import DarkModeToggle from "../../components/DarkModeToggle";
 import Sidebar from "./Sidebar";
 
-function AdminLayout({ children }) {
+function AdminLayout() {
     const [isOpen, setIsOpen] = useState(true);
     const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -21,13 +21,13 @@ function AdminLayout({ children }) {
             <Sidebar isOpen={isOpen} />
 
             {/* Main Content */}
-            <div className="flex-1 bg-gray-100">
+            <div className="flex-1 bg-gray-100 dark:bg-gray-600">
                 {/* Navigation Bar */}
-                <nav className="mb-6 flex items-center justify-between bg-white p-4 shadow-md">
+                <nav className="flex items-center justify-between bg-white p-2 shadow-md dark:bg-gray-800">
                     {/* Toggle Button */}
                     <button
                         onClick={toggleSidebar}
-                        className="text-2xl focus:outline-none"
+                        className="text-2xl focus:outline-none dark:text-gray-200"
                     >
                         <i className="fa-solid fa-bars"></i>
                     </button>
@@ -38,15 +38,12 @@ function AdminLayout({ children }) {
                 </nav>
 
                 {/* Children Content */}
-                <div className="p-6">{children}</div>
+                <div className="p-6">
+                    <Outlet />
+                </div>
             </div>
         </div>
     );
 }
-
-// Add PropTypes validation
-AdminLayout.propTypes = {
-    children: PropTypes.node.isRequired, // 'children' should be any valid React node
-};
 
 export default AdminLayout;

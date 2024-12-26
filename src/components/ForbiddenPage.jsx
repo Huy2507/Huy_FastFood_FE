@@ -14,6 +14,12 @@ function ForbiddenPage() {
             >
                 Trở về trang chủ
             </Link>
+            <Link
+                to="/login"
+                className="mt-6 rounded-lg bg-orange-500 px-6 py-3 text-white hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-blue-700"
+            >
+                Đến đăng nhập
+            </Link>
         </div>
     );
 }

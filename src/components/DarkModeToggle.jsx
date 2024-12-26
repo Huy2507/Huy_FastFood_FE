@@ -70,14 +70,14 @@ const DarkModeToggle = ({ isDarkMode, onToggle }) => {
 
             {/* Toggle knob */}
             <span
-                className={`translate-x-${isDarkMode ? "[2.625rem]" : "0"} absolute left-0.5 top-0.5 flex h-8 w-8 transform items-center justify-center rounded-full bg-white transition duration-500`}
+                className={`${isDarkMode ? "translate-x-[2.625rem]" : "translate-x-0"} absolute left-0.5 top-0.5 flex h-8 w-8 transform items-center justify-center rounded-full bg-white transition duration-500`}
             >
                 <svg
                     width="24"
                     height="24"
                     fill="none"
                     aria-hidden="true"
-                    className={`opacity-${isDarkMode ? "0" : "100"} scale-${isDarkMode ? "0" : "100"} flex-none transform text-orange-500 transition duration-500`}
+                    className={`${isDarkMode ? "opacity-0" : "opacity-100"} scale-${isDarkMode ? "scale-0" : "scale-100"} flex-none transform text-orange-500 transition duration-500`}
                 >
                     <path
                         d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"

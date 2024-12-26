@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ForbiddenPage from "../components/ForbiddenPage";
 import NotFoundPage from "../components/NotFoundPage";
+import AdminCategory from "../pages/admin/AdminCategory/AdminCategory";
 import AdminFood from "../pages/admin/AdminFood/AdminFood";
 import AdminLayout from "../pages/admin/AdminLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -32,7 +33,8 @@ const AppRouter = () => {
                 {/* Menu */}
                 <Route path="/menu">
                     <Route index element={<Menu />} />
-                    <Route path=":id" element={<FoodDetails />} />
+                    <Route path=":slug" element={<Menu />} />
+                    <Route path=":slug/:id" element={<FoodDetails />} />
                 </Route>
 
                 {/* Tài khoản */}
@@ -69,10 +71,10 @@ const AppRouter = () => {
                         />
                     }
                 >
-                    <Route index element={<div>Admin Dashboard</div>} />
+                    <Route index element={<AdminFood />} />
                     <Route path="statistic" element={<AdminFood />} />
                     <Route path="food" element={<AdminFood />} />
-                    <Route path="category" element={<AdminFood />} />
+                    <Route path="category" element={<AdminCategory />} />
                     <Route path="banner" element={<AdminFood />} />
                     <Route path="user" element={<AdminFood />} />
                     <Route path="customer" element={<AdminFood />} />

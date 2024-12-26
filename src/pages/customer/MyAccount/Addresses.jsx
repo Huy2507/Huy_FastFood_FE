@@ -176,7 +176,6 @@ function Addresses() {
                                         <th className="border px-4 py-2 text-left">
                                             Default
                                         </th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>

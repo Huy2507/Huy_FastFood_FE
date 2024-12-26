@@ -97,8 +97,10 @@ function MenuFood() {
                         rect.top <= window.innerHeight / 2 &&
                         rect.bottom >= window.innerHeight / 2
                     ) {
-                        // Cập nhật URL với slug của danh mục
-                        navigate(`/menu/${category.category.slug}`);
+                        // Check if the slug exists before navigating
+                        if (category.category.slug) {
+                            navigate(`/menu/${category.category.slug}`);
+                        }
                     }
                 }
             });

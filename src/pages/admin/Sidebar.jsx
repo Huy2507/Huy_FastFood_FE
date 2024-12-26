@@ -9,6 +9,7 @@ function Sidebar({ isOpen }) {
     const menuItems = [
         {
             path: "/admin/statistic",
+            path2: "/admin",
             label: "Thống Kê",
             icon: "fa-chart-simple",
         },
@@ -55,7 +56,8 @@ function Sidebar({ isOpen }) {
                             <li
                                 key={item.label}
                                 className={`group rounded-lg ${
-                                    location.pathname === item.path
+                                    location.pathname === item.path ||
+                                    location.pathname === item.path2
                                         ? "border-4 border-orange-500 bg-orange-100 text-gray-600 dark:bg-gray-700 dark:text-orange-400"
                                         : "border-4 border-transparent hover:border-orange-500 hover:bg-orange-100 dark:hover:bg-gray-700 dark:hover:text-orange-400"
                                 }`}

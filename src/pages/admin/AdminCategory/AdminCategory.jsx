@@ -1,28 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify"; // Không cần import ToastContainer nữa
-import { AdminGetAllFood } from "../../../services/adminService/Food";
+import { toast } from "react-toastify";
+import { AdminGetCategories } from "../../../services/adminService/Category";
 import { getFullUrl } from "../../../services/api/axiosInstance";
-import FoodForm from "./FoodForm";
+import CategoryForm from "./CategoryForm"; // Giả sử bạn có một form quản lý Category
 
-function AdminFood() {
-    const [foodItems, setFoodItems] = useState([]);
+function AdminCategory() {
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [expandedFoodId, setExpandedFoodId] = useState(null);
+    const [expandedCategoryId, setExpandedCategoryId] = useState(null);
 
     const [search, setSearch] = useState("");
-    const [enable, setEnable] = useState("");
-    const [isPopular, setIsPopular] = useState("");
-
-    const [editFoodId, setEditFoodId] = useState(null); // Lưu ID món ăn đang chỉnh sửa
-    const [isAddingFood, setIsAddingFood] = useState(false); // Trạng thái thêm món ăn
+    const [editCategoryId, setEditCategoryId] = useState(null); // Lưu ID category đang chỉnh sửa
+    const [isAddingCategory, setIsAddingCategory] = useState(false); // Trạng thái thêm danh mục mới
 
     const searchInputRef = useRef(null);
 
-    const fetchFood = async () => {
+    // Lấy danh sách category
+    const fetchCategories = async () => {
         setLoading(true);
         try {
-            const data = await AdminGetAllFood({ search, enable, isPopular });
-            setFoodItems(data);
+            const data = await AdminGetCategories(search);
+            setCategories(data);
         } catch (err) {
             toast.error(err.message || "Đã xảy ra lỗi");
         } finally {
@@ -31,8 +29,8 @@ function AdminFood() {
     };
 
     useEffect(() => {
-        fetchFood();
-    }, [search, enable, isPopular]);
+        fetchCategories();
+    }, [search]);
 
     useEffect(() => {
         if (!loading && searchInputRef.current) {
@@ -40,42 +38,38 @@ function AdminFood() {
         }
     }, [search]);
 
-    const toggleExpandFood = (foodId) => {
-        setExpandedFoodId((prev) => (prev === foodId ? null : foodId));
+    const toggleExpandCategory = (categoryId) => {
+        setExpandedCategoryId((prev) =>
+            prev === categoryId ? null : categoryId,
+        );
     };
 
-    const handleAddFood = () => {
-        setEditFoodId(null);
-        setIsAddingFood(true);
-        console.log(isAddingFood);
+    const handleAddCategory = () => {
+        setEditCategoryId(null);
+        setIsAddingCategory(true);
     };
 
-    const handleEditFood = (foodId) => {
-        setEditFoodId(foodId);
-        setIsAddingFood(false);
-        console.log(editFoodId);
+    const handleEditCategory = (categoryId) => {
+        setEditCategoryId(categoryId);
+        setIsAddingCategory(false);
     };
 
     const handleCloseEditForm = () => {
-        setEditFoodId(null);
-        setIsAddingFood(false);
+        setEditCategoryId(null);
+        setIsAddingCategory(false);
     };
 
-    const handleSaveEditFood = (updatedFood) => {
-        console.log("Lưu món ăn:", updatedFood);
-        setEditFoodId(null);
-        setIsAddingFood(false); // Đóng form sau khi lưu
-        fetchFood(); // Tải lại danh sách món ăn
+    const handleSaveEditCategory = (updatedCategory) => {
+        console.log("Lưu danh mục:", updatedCategory);
+        setEditCategoryId(null);
+        setIsAddingCategory(false); // Đóng form sau khi lưu
+        fetchCategories(); // Tải lại danh sách category
     };
-
-    // if (loading) {
-    //     return <Loading />;
-    // }
 
     return (
         <div className="px-4 pb-4 dark:bg-gray-600 dark:text-white">
             <h1 className="mb-4 text-center text-3xl font-bold">
-                Quản lý sán phẩm
+                Quản lý Danh mục
             </h1>
             {/* Bộ lọc */}
             <div className="flex justify-between">
@@ -84,35 +78,13 @@ function AdminFood() {
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Tìm kiếm món ăn..."
+                        placeholder="Tìm kiếm danh mục..."
                         className="mb-4 rounded border p-2 dark:bg-gray-800 dark:text-white"
                         ref={searchInputRef}
                     />
-                    <select
-                        className="h-10 border px-4 dark:bg-gray-800 dark:text-white"
-                        value={enable}
-                        onChange={(e) => setEnable(e.target.value)}
-                    >
-                        <option value="">Tất cả (Khả dụng)</option>
-                        <option value="true">Khả dụng</option>
-                        <option value="false">Không khả dụng</option>
-                    </select>
-                    <select
-                        className="h-10 border px-4 dark:bg-gray-800 dark:text-white"
-                        value={isPopular}
-                        onChange={(e) => setIsPopular(e.target.value)}
-                    >
-                        <option value="">Tất cả (Phổ biến)</option>
-                        <option value="true">Phổ biến</option>
-                        <option value="false">Không phổ biến</option>
-                    </select>
                     <button
                         type="button"
-                        onClick={() => {
-                            setSearch("");
-                            setEnable("");
-                            setIsPopular("");
-                        }}
+                        onClick={() => setSearch("")}
                         className="mx-3 mb-[17.6px] flex items-start border px-2 text-4xl text-gray-500 hover:text-red-500 dark:text-white dark:hover:text-red-500"
                     >
                         <i className="fas fa-close"></i>
@@ -121,7 +93,7 @@ function AdminFood() {
 
                 <div className="mr-4 flex items-center">
                     <button
-                        onClick={handleAddFood}
+                        onClick={handleAddCategory}
                         className="mb-4 rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
                     >
                         <i className="fas fa-plus"></i>
@@ -129,7 +101,7 @@ function AdminFood() {
                 </div>
             </div>
 
-            {foodItems.length > 0 ? (
+            {categories.length > 0 ? (
                 <div className="relative max-h-[500px] overflow-y-auto">
                     <table className="w-full table-auto border-collapse dark:bg-gray-800 dark:text-white">
                         <thead className="sticky -top-1 bg-orange-200 dark:bg-teal-900 dark:text-white">
@@ -140,74 +112,54 @@ function AdminFood() {
                                 <th className="border px-4 py-2 text-left">
                                     Ảnh
                                 </th>
-                                <th className="border px-4 py-2 text-left">
-                                    Tên
-                                </th>
-                                <th className="border px-4 py-2 text-left">
-                                    Giá
-                                </th>
-                                <th className="border px-4 py-2 text-left">
-                                    Loại
-                                </th>
-                                <th className="border px-4 py-2 text-left">
-                                    Mô Tả
+                                <th className="whitespace-nowrap border px-4 py-2 text-left">
+                                    Tên danh mục
                                 </th>
                                 <th className="whitespace-nowrap border px-4 py-2 text-left">
-                                    Khả dụng
-                                </th>
-                                <th className="whitespace-nowrap border px-4 py-2 text-left">
-                                    Phổ biến
+                                    Mô tả
                                 </th>
                                 <th className="whitespace-nowrap border px-4 py-2 text-left"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {foodItems.map((food) => (
-                                <React.Fragment key={food.foodId}>
+                            {categories.map((category) => (
+                                <React.Fragment key={category.categoryId}>
                                     {/* Hàng hiển thị thông tin cơ bản */}
                                     <tr
-                                        key={food.foodId}
                                         className="cursor-pointer p-3 odd:bg-white even:bg-gray-100 hover:bg-orange-100 dark:odd:bg-gray-800 dark:even:bg-gray-700 dark:hover:bg-gray-600"
                                         onClick={() =>
-                                            toggleExpandFood(food.foodId)
+                                            toggleExpandCategory(
+                                                category.categoryId,
+                                            )
                                         }
                                     >
                                         <td className="border px-4 py-2">
-                                            {food.foodId}
+                                            {category.categoryId}
                                         </td>
                                         <td className="mr-3 border object-cover px-2 py-2">
                                             <img
                                                 className="h-20 w-20 rounded-md object-cover"
-                                                src={getFullUrl(food.imageUrl)}
-                                                alt={food.name}
+                                                src={getFullUrl(
+                                                    category.imgUrl,
+                                                )}
+                                                alt={category.categoryName}
                                             />
                                         </td>
                                         <td className="border px-4 py-2">
-                                            {food.name}
-                                        </td>
-                                        <td className="border px-4 py-2">
-                                            {food.price}
-                                        </td>
-                                        <td className="border px-4 py-2">
-                                            {food.categoryName}
+                                            {category.categoryName}
                                         </td>
                                         <td className="max-h-[80px] overflow-hidden border px-4 py-2">
                                             <div className="line-clamp-3">
-                                                {food.description}
+                                                {category.description}
                                             </div>
-                                        </td>
-                                        {/* Khả dụng và Phổ biến */}
-                                        <td className="border px-4 py-2 text-center">
-                                            {food.enable ? "✅" : "❌"}
-                                        </td>
-                                        <td className="border px-4 py-2 text-center">
-                                            {food.isPopular ? "⭐" : "—"}
                                         </td>
                                         <td
                                             className="border px-4 py-2"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleEditFood(food.foodId);
+                                                handleEditCategory(
+                                                    category.categoryId,
+                                                );
                                             }}
                                         >
                                             <button className="fa-solid fa-pen-to-square text-xl text-orange-500 hover:scale-105"></button>
@@ -215,10 +167,11 @@ function AdminFood() {
                                     </tr>
 
                                     {/* Hàng hiển thị chi tiết (nếu mở rộng) */}
-                                    {expandedFoodId === food.foodId && (
+                                    {expandedCategoryId ===
+                                        category.categoryId && (
                                         <tr>
                                             <td
-                                                colSpan="9"
+                                                colSpan="5"
                                                 className="border px-4 py-2"
                                             >
                                                 <div className="overflow-hidden transition-all duration-300 ease-in-out">
@@ -230,44 +183,23 @@ function AdminFood() {
                                                             <strong>
                                                                 SEO Title:
                                                             </strong>{" "}
-                                                            {food.seoTitle}
+                                                            {category.seoTitle}
                                                         </p>
                                                         <p className="text-gray-600 dark:text-gray-400">
                                                             <strong>
                                                                 SEO Description:
                                                             </strong>{" "}
                                                             {
-                                                                food.seoDescription
+                                                                category.seoDescription
                                                             }
                                                         </p>
                                                         <p className="text-gray-600 dark:text-gray-400">
                                                             <strong>
                                                                 SEO Keywords:
                                                             </strong>{" "}
-                                                            {food.seoKeywords}
-                                                        </p>
-                                                        <p className="text-gray-600 dark:text-gray-400">
-                                                            <strong>
-                                                                Slug:
-                                                            </strong>{" "}
-                                                            {food.slug}
-                                                        </p>
-                                                        <p className="text-gray-600 dark:text-gray-400">
-                                                            <strong>
-                                                                Thời gian tạo:
-                                                            </strong>{" "}
-                                                            {new Date(
-                                                                food.createdAt,
-                                                            ).toLocaleString()}
-                                                        </p>
-                                                        <p className="text-gray-600 dark:text-gray-400">
-                                                            <strong>
-                                                                Cập nhật lần
-                                                                cuối:
-                                                            </strong>{" "}
-                                                            {new Date(
-                                                                food.updatedAt,
-                                                            ).toLocaleString()}
+                                                            {
+                                                                category.seoKeywords
+                                                            }
                                                         </p>
                                                     </div>
                                                 </div>
@@ -281,18 +213,18 @@ function AdminFood() {
                 </div>
             ) : (
                 <p className="text-gray-500 dark:text-gray-400">
-                    Không có món ăn nào để hiển thị.
+                    Không có danh mục nào để hiển thị.
                 </p>
             )}
-            {(editFoodId || isAddingFood) && (
-                <FoodForm
-                    foodId={editFoodId}
+            {(editCategoryId || isAddingCategory) && (
+                <CategoryForm
+                    categoryId={editCategoryId}
                     onClose={handleCloseEditForm}
-                    onSave={handleSaveEditFood}
+                    onSave={handleSaveEditCategory}
                 />
             )}
         </div>
     );
 }
 
-export default AdminFood;
+export default AdminCategory;
