@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AdminGetCategories } from "../../../services/adminService/Category"; // Import API categories
 import {
+    AdminCreateFood,
     AdminGetFoodById,
     AdminUpdateFood,
 } from "../../../services/adminService/Food"; // Import API
@@ -27,7 +28,6 @@ const FoodForm = ({ foodId, onClose, onSave }) => {
         const fetchData = async () => {
             try {
                 const categoryData = await AdminGetCategories();
-                console.log(categories);
                 setCategories(categoryData);
             } catch (err) {
                 toast.error(err.message || "Đã xảy ra lỗi khi tải dữ liệu");
@@ -43,7 +43,6 @@ const FoodForm = ({ foodId, onClose, onSave }) => {
                 if (foodId) {
                     const foodData = await AdminGetFoodById(foodId);
                     setEditFood(foodData);
-                    console.log(foodData);
                 }
             } catch (err) {
                 toast.error(err.message || "Đã xảy ra lỗi khi tải dữ liệu");
@@ -54,6 +53,15 @@ const FoodForm = ({ foodId, onClose, onSave }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const confirmMessage = foodId
+            ? "Bạn có chắc chắn muốn cập nhật thông tin món ăn này không?"
+            : "Bạn có chắc chắn muốn thêm món ăn này không?";
+        const confirmed = window.confirm(confirmMessage);
+
+        if (!confirmed) {
+            return; // Nếu người dùng bấm 'Hủy', dừng xử lý
+        }
 
         // Prepare FormData for API
         const formData = new FormData();
@@ -73,13 +81,14 @@ const FoodForm = ({ foodId, onClose, onSave }) => {
         }
 
         try {
-            await AdminUpdateFood(foodId, formData);
-            toast.success(
-                foodId
-                    ? "Cập nhật món ăn thành công"
-                    : "Thêm món ăn thành công",
-            );
-            onSave(); // Notify parent component
+            if (foodId) {
+                await AdminUpdateFood(foodId, formData);
+                toast.success("Cập nhật món ăn thành công");
+            } else {
+                await AdminCreateFood(formData);
+                toast.success("Thêm món ăn thành công");
+            }
+            onSave(); // Notify parent component}
         } catch (err) {
             toast.error(err.message || "Đã xảy ra lỗi khi lưu dữ liệu");
         }

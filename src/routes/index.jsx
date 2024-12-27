@@ -2,9 +2,12 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ForbiddenPage from "../components/ForbiddenPage";
 import NotFoundPage from "../components/NotFoundPage";
+import AdminAccount from "../pages/admin/AdminAccount/AdminAccount";
+import AdminBanner from "../pages/admin/AdminBanner/AdminBanner";
 import AdminCategory from "../pages/admin/AdminCategory/AdminCategory";
 import AdminFood from "../pages/admin/AdminFood/AdminFood";
 import AdminLayout from "../pages/admin/AdminLayout";
+import AdminRole from "../pages/admin/AdminRole/AdminRole";
 import ProtectedRoute from "./ProtectedRoute";
 
 const Auth = lazy(() => import("../pages/auth"));
@@ -75,11 +78,11 @@ const AppRouter = () => {
                     <Route path="statistic" element={<AdminFood />} />
                     <Route path="food" element={<AdminFood />} />
                     <Route path="category" element={<AdminCategory />} />
-                    <Route path="banner" element={<AdminFood />} />
-                    <Route path="user" element={<AdminFood />} />
+                    <Route path="banner" element={<AdminBanner />} />
+                    <Route path="account" element={<AdminAccount />} />
                     <Route path="customer" element={<AdminFood />} />
                     <Route path="employee" element={<AdminFood />} />
-                    <Route path="role" element={<AdminFood />} />
+                    <Route path="role" element={<AdminRole />} />
                 </Route>
 
                 {/* Forbidden Page */}

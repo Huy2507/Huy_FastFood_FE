@@ -19,7 +19,6 @@ export const AdminGetAllFood = async ({ search, enable, isPopular }) => {
 export const AdminGetFoodById = async (foodId) => {
     try {
         const response = await axiosInstance.get(`/AdminFood/${foodId}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         throw error.response
@@ -30,7 +29,11 @@ export const AdminGetFoodById = async (foodId) => {
 
 export const AdminCreateFood = async (foodData) => {
     try {
-        const response = await axiosInstance.post("/AdminFood", foodData);
+        const response = await axiosInstance.post("/AdminFood", foodData, {
+            headers: {
+                "Content-Type": "multipart/form-data", // Ensure this is set
+            },
+        });
         return response.data;
     } catch (error) {
         throw error.response

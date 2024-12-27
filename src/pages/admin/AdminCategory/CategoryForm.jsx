@@ -46,6 +46,16 @@ const CategoryForm = ({ categoryId, onClose, onSave }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const confirmMessage = categoryId
+            ? "Bạn có chắc chắn muốn cập nhật thông tin món ăn này không?"
+            : "Bạn có chắc chắn muốn thêm món ăn này không?";
+        const confirmed = window.confirm(confirmMessage);
+
+        if (!confirmed) {
+            return; // Nếu người dùng bấm 'Hủy', dừng xử lý
+        }
+
         console.log(categoryData.categoryName);
         try {
             if (categoryId) {

@@ -42,13 +42,15 @@ function Login() {
 
             // Hiển thị thông báo thành công
             toast.success(`Xin chào ${userName}, đăng nhập thành công!`);
-            if (role === "Admin") {
-                navigate("/admin");
-            }
 
-            if (role === "Customer") {
-                navigate("/");
-            }
+            // Thực hiện chuyển hướng sau 1 giây
+            setTimeout(() => {
+                if (role === "Admin") {
+                    navigate("/admin");
+                } else if (role === "Customer") {
+                    navigate("/");
+                }
+            }, 1000); // 1 giây
         } catch (error) {
             console.log(error);
             toast.error(error.message || "Đăng nhập thất bại");

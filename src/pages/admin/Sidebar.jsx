@@ -16,7 +16,7 @@ function Sidebar({ isOpen }) {
         { path: "/admin/food", label: "Sản Phẩm", icon: "fa-burger" },
         { path: "/admin/category", label: "Danh Mục", icon: "fa-list" },
         { path: "/admin/banner", label: "Banner", icon: "fa-square-minus" },
-        { path: "/admin/user", label: "Tài Khoản", icon: "fa-user" },
+        { path: "/admin/account", label: "Tài Khoản", icon: "fa-user" },
         {
             path: "/admin/customer",
             label: "Khách Hàng",

@@ -53,7 +53,6 @@ function AdminFood() {
     const handleEditFood = (foodId) => {
         setEditFoodId(foodId);
         setIsAddingFood(false);
-        console.log(editFoodId);
     };
 
     const handleCloseEditForm = () => {
@@ -75,7 +74,7 @@ function AdminFood() {
     return (
         <div className="px-4 pb-4 dark:bg-gray-600 dark:text-white">
             <h1 className="mb-4 text-center text-3xl font-bold">
-                Quản lý sán phẩm
+                Quản lý Sản phẩm
             </h1>
             {/* Bộ lọc */}
             <div className="flex justify-between">

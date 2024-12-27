@@ -1,23 +1,26 @@
+import { jwtDecode } from "jwt-decode";
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
-import Loading from "../components/Loading";
-import { useAuth } from "../pages/auth/useAuth"; // Đảm bảo đúng đường dẫn
 
 const ProtectedRoute = ({ element: Component, requiredRole }) => {
-    const { user, loading1 } = useAuth();
-
     // Hiển thị loading khi chưa xác định trạng thái user
-    if (loading1) {
-        return <Loading />;
-    }
+
+    const token = localStorage.getItem("accessToken");
+    const decodedToken = jwtDecode(token);
+
+    // Lấy thông tin cần thiết từ token
+    const role =
+        decodedToken[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
 
     // Chưa đăng nhập
-    if (!user) {
+    if (!decodedToken) {
         return <Navigate to="/login" />;
     }
 
     // Không đủ quyền
-    if (requiredRole && user.role !== requiredRole) {
+    if (requiredRole && role !== requiredRole) {
         return <Navigate to="/forbidden" />;
     }
 
