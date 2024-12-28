@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import DarkModeToggle from "../../components/DarkModeToggle";
 import Sidebar from "./Sidebar";
@@ -6,6 +6,13 @@ import Sidebar from "./Sidebar";
 function AdminLayout() {
     const [isOpen, setIsOpen] = useState(true);
     const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        const darkModeState = localStorage.getItem("darkMode");
+        if (darkModeState === "true") {
+            setIsDarkMode(true);
+        }
+    }, []);
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);

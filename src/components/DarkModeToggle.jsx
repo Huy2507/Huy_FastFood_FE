@@ -1,12 +1,24 @@
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 const DarkModeToggle = ({ isDarkMode, onToggle }) => {
+    useEffect(() => {
+        // Check localStorage to see if dark mode is enabled
+        const darkModeState = localStorage.getItem("darkMode");
+        if (darkModeState === "true") {
+            window.document.documentElement.classList.add("dark");
+        } else {
+            window.document.documentElement.classList.remove("dark");
+        }
+    }, []);
     const toggleDarkMode = () => {
         const root = window.document.documentElement;
         if (isDarkMode) {
             root.classList.remove("dark");
+            localStorage.setItem("darkMode", "false"); // Save state as false
         } else {
             root.classList.add("dark");
+            localStorage.setItem("darkMode", "true"); // Save state as true
         }
         onToggle();
     };

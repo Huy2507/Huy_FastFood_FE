@@ -5,6 +5,7 @@ import NotFoundPage from "../components/NotFoundPage";
 import AdminAccount from "../pages/admin/AdminAccount/AdminAccount";
 import AdminBanner from "../pages/admin/AdminBanner/AdminBanner";
 import AdminCategory from "../pages/admin/AdminCategory/AdminCategory";
+import AdminEmployee from "../pages/admin/AdminEmployee/AdminEmployee";
 import AdminFood from "../pages/admin/AdminFood/AdminFood";
 import AdminLayout from "../pages/admin/AdminLayout";
 import AdminRole from "../pages/admin/AdminRole/AdminRole";
@@ -81,7 +82,7 @@ const AppRouter = () => {
                     <Route path="banner" element={<AdminBanner />} />
                     <Route path="account" element={<AdminAccount />} />
                     <Route path="customer" element={<AdminFood />} />
-                    <Route path="employee" element={<AdminFood />} />
+                    <Route path="employee" element={<AdminEmployee />} />
                     <Route path="role" element={<AdminRole />} />
                 </Route>
 
