@@ -43,7 +43,7 @@ function FavoriteFood() {
                         </div>
                         <div className="flex w-2/3 flex-col justify-center bg-white md:w-full">
                             {/* Thông tin ẩn ban đầu */}
-                            <div className="absolute left-0 top-0 hidden h-full transform flex-col items-center justify-center bg-white px-4 duration-500 ease-in-out lg:block lg:translate-y-full lg:hover:translate-y-0 lg:group-hover:translate-y-0">
+                            <div className="absolute left-0 top-0 hidden h-full w-full transform flex-col items-center justify-center bg-white px-4 duration-500 ease-in-out lg:block lg:translate-y-full lg:hover:translate-y-0 lg:group-hover:translate-y-0">
                                 <div className="py-3 text-center text-5xl">
                                     {/* Icon placeholder */}🍔
                                 </div>

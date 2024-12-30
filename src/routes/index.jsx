@@ -5,10 +5,14 @@ import NotFoundPage from "../components/NotFoundPage";
 import AdminAccount from "../pages/admin/AdminAccount/AdminAccount";
 import AdminBanner from "../pages/admin/AdminBanner/AdminBanner";
 import AdminCategory from "../pages/admin/AdminCategory/AdminCategory";
+import AdminCustomer from "../pages/admin/AdminCustomer/AdminCustomer";
+import CustomerDetail from "../pages/admin/AdminCustomer/CustomerDetail";
+import OrderDetail from "../pages/admin/AdminCustomer/OrderDetail";
 import AdminEmployee from "../pages/admin/AdminEmployee/AdminEmployee";
 import AdminFood from "../pages/admin/AdminFood/AdminFood";
 import AdminLayout from "../pages/admin/AdminLayout";
 import AdminRole from "../pages/admin/AdminRole/AdminRole";
+import AdminStatistic from "../pages/admin/AdminStatistic/AdminStatistic";
 import ProtectedRoute from "./ProtectedRoute";
 
 const Auth = lazy(() => import("../pages/auth"));
@@ -75,13 +79,18 @@ const AppRouter = () => {
                         />
                     }
                 >
-                    <Route index element={<AdminFood />} />
-                    <Route path="statistic" element={<AdminFood />} />
+                    <Route index element={<AdminStatistic />} />
+                    <Route path="statistic" element={<AdminStatistic />} />
                     <Route path="food" element={<AdminFood />} />
                     <Route path="category" element={<AdminCategory />} />
                     <Route path="banner" element={<AdminBanner />} />
                     <Route path="account" element={<AdminAccount />} />
-                    <Route path="customer" element={<AdminFood />} />
+                    <Route path="customer" element={<AdminCustomer />} />
+                    <Route path="customer/:id" element={<CustomerDetail />} />
+                    <Route
+                        path="customer/:id/order/:orderid"
+                        element={<OrderDetail />}
+                    />
                     <Route path="employee" element={<AdminEmployee />} />
                     <Route path="role" element={<AdminRole />} />
                 </Route>

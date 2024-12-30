@@ -40,14 +40,16 @@ function Sidebar({ isOpen }) {
         >
             <div className="flex w-full flex-col">
                 {/* Logo */}
-                <div className="my-3 flex items-center justify-center">
-                    <div
-                        className={`${isOpen ? "scale-100 opacity-100" : "scale-50 opacity-50"} transition-all duration-300`}
-                    >
-                        {isOpen && <Logo />}
+                <Link to="/">
+                    <div className="my-3 flex items-center justify-center">
+                        <div
+                            className={`${isOpen ? "scale-100 opacity-100" : "scale-50 opacity-50"} transition-all duration-300`}
+                        >
+                            {isOpen && <Logo />}
+                        </div>
+                        {!isOpen && <SidebarLogo />}
                     </div>
-                    {!isOpen && <SidebarLogo />}
-                </div>
+                </Link>
 
                 {/* Menu Items */}
                 <div className="flex-1">
@@ -56,7 +58,7 @@ function Sidebar({ isOpen }) {
                             <li
                                 key={item.label}
                                 className={`group rounded-lg ${
-                                    location.pathname === item.path ||
+                                    location.pathname.startsWith(item.path) ||
                                     location.pathname === item.path2
                                         ? "border-4 border-orange-500 bg-orange-100 text-gray-600 dark:bg-gray-700 dark:text-orange-400"
                                         : "border-4 border-transparent hover:border-orange-500 hover:bg-orange-100 dark:hover:bg-gray-700 dark:hover:text-orange-400"

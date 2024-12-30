@@ -185,7 +185,8 @@ function AdminFood() {
                                             {food.name}
                                         </td>
                                         <td className="border px-4 py-2">
-                                            {food.price}
+                                            {food.price.toLocaleString("vi-VN")}
+                                            đ
                                         </td>
                                         <td className="border px-4 py-2">
                                             {food.categoryName}

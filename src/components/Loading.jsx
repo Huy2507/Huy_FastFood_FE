@@ -1,6 +1,6 @@
 function Loading() {
     return (
-        <div className="flex min-h-[500px] items-center justify-center bg-gray-100">
+        <div className="flex min-h-[500px] items-center justify-center bg-gray-100 dark:bg-gray-600">
             <div className="h-16 w-16 animate-spin rounded-full border-t-4 border-solid border-orange-500"></div>
         </div>
     );

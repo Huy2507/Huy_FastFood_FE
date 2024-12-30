@@ -140,7 +140,7 @@ const EmployeeForm = ({ employeeId, onClose, onSave }) => {
                                 Số điện thoại
                             </label>
                             <input
-                                type="text"
+                                type="tel"
                                 value={editEmployee.phone}
                                 onChange={(e) =>
                                     setEditEmployee({
