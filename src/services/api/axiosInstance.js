@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie"; // Import js-cookie for managing cookies
 
 const axiosInstance = axios.create({
     baseURL: "/api", // Đường dẫn gốc cho tất cả các request
@@ -10,7 +11,7 @@ const axiosInstance = axios.create({
 // Thêm interceptor để tự động chèn token vào headers
 axiosInstance.interceptors.request.use(
     (config) => {
-        const accessToken = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+        const accessToken = Cookies.get("accessToken"); // Lấy token từ cookies
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
@@ -34,4 +35,5 @@ const API_BASE_URL = "https://localhost:7290"; // URL gốc của backend
 
 export const getFullUrl = (path) =>
     `${API_BASE_URL}/${path}`.replace(/\/+/g, "/");
+
 export default axiosInstance;

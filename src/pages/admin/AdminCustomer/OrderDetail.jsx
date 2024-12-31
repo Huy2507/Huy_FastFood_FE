@@ -118,9 +118,7 @@ function OrderDetail() {
                                     {item.price.toLocaleString("vi-VN")} đ
                                 </td>
                                 <td className="border px-4 py-2 text-right">
-                                    {item.quantity *
-                                        item.price.toLocaleString("vi-VN")}{" "}
-                                    đ
+                                    {item.totalPrice.toLocaleString("vi-VN")} đ
                                 </td>
                             </tr>
                         ))}

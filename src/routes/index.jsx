@@ -13,6 +13,7 @@ import AdminFood from "../pages/admin/AdminFood/AdminFood";
 import AdminLayout from "../pages/admin/AdminLayout";
 import AdminRole from "../pages/admin/AdminRole/AdminRole";
 import AdminStatistic from "../pages/admin/AdminStatistic/AdminStatistic";
+import PaymentStatus from "../pages/customer/cart/PaymentStatus";
 import ProtectedRoute from "./ProtectedRoute";
 
 const Auth = lazy(() => import("../pages/auth"));
@@ -59,6 +60,7 @@ const AppRouter = () => {
 
                 {/* Giỏ hàng */}
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/payment-status" element={<PaymentStatus />} />
 
                 {/* Xác thực */}
                 <Route path="/login" element={<Auth />} />

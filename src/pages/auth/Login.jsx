@@ -1,3 +1,4 @@
+import Cookies from "js-cookie"; // Import thư viện js-cookie
 import { jwtDecode } from "jwt-decode";
 import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +11,8 @@ function Login() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [isLogin, setIsLogin] = useState(true); // Để theo dõi trạng thái login/register
+    const [isLogin, setIsLogin] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -22,10 +24,23 @@ function Login() {
 
         try {
             const data = await LoginApi(loginData); // Gọi API login
-            // Lưu token vào localStorage
-            localStorage.setItem("accessToken", data.accessToken);
+            // Lưu token vào cookie
+            Cookies.set("accessToken", data.accessToken, {
+                expires: 1,
+                secure: true,
+                sameSite: "Strict",
+            });
+            Cookies.set("name", data.name, {
+                expires: 1,
+                secure: true,
+                sameSite: "Strict",
+            });
             if (data.refreshToken) {
-                localStorage.setItem("refreshToken", data.refreshToken);
+                Cookies.set("refreshToken", data.refreshToken, {
+                    expires: 7,
+                    secure: true,
+                    sameSite: "Strict",
+                });
             }
             // Decode token để lấy thông tin người dùng
             const decodedToken = jwtDecode(data.accessToken);
@@ -39,15 +54,25 @@ function Login() {
                 decodedToken[
                     "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
                 ];
-
+            console.log(role);
             // Hiển thị thông báo thành công
-            toast.success(`Xin chào ${userName}, đăng nhập thành công!`);
+            if (data.name !== "Unknown") {
+                toast.success(`Xin chào ${data.name}, đăng nhập thành công!`);
+            } else {
+                toast.success(`Xin chào ${userName}, đăng nhập thành công!`);
+            }
 
             // Thực hiện chuyển hướng sau 1 giây
             setTimeout(() => {
-                if (role === "Admin") {
+                if (
+                    role === "Admin" ||
+                    (Array.isArray(role) && role.includes("Admin"))
+                ) {
                     navigate("/admin");
-                } else if (role === "Customer") {
+                } else if (
+                    role === "Customer" ||
+                    (Array.isArray(role) && role.includes("Customer"))
+                ) {
                     navigate("/");
                 }
             }, 1000); // 1 giây
@@ -56,6 +81,18 @@ function Login() {
             toast.error(error.message || "Đăng nhập thất bại");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setPassword(value);
+
+        // Kiểm tra độ dài mật khẩu
+        if (value.length < 6) {
+            setError("Mật khẩu phải có ít nhất 6 ký tự.");
+        } else {
+            setError("");
         }
     };
 
@@ -94,14 +131,14 @@ function Login() {
 
                                 <div className="relative mb-6">
                                     <input
-                                        type="password"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
                                         id="passwordInput"
                                         className="peer block w-full rounded-b-md border-b-2 border-gray-300 bg-transparent px-3 py-2 pr-10 text-sm text-gray-800 placeholder-transparent focus:border-teal-500 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-teal-400"
                                         placeholder="aa"
                                         value={password}
-                                        onChange={(e) =>
-                                            setPassword(e.target.value)
-                                        }
+                                        onChange={handlePasswordChange}
                                     />
                                     <label
                                         htmlFor="passwordInput"
@@ -109,14 +146,22 @@ function Login() {
                                     >
                                         Mật khẩu
                                     </label>
-                                    <i className="fas fa-lock absolute right-3 top-3 text-gray-400 peer-focus:text-teal-500 dark:text-gray-500 dark:peer-focus:text-teal-400"></i>
+                                    <i
+                                        className={`fas ${
+                                            showPassword
+                                                ? "fa-eye-slash"
+                                                : "fa-eye"
+                                        } absolute right-3 top-3 cursor-pointer text-gray-400 hover:text-teal-500 dark:text-gray-500 dark:hover:text-teal-400`}
+                                        onClick={() =>
+                                            setShowPassword((prev) => !prev)
+                                        }
+                                    ></i>
+                                    {error && (
+                                        <p className="mt-2 text-sm text-red-500 dark:text-red-400">
+                                            {error}
+                                        </p>
+                                    )}
                                 </div>
-
-                                {error && (
-                                    <div className="mb-4 text-red-500">
-                                        {error}
-                                    </div>
-                                )}
 
                                 <button
                                     type="submit"

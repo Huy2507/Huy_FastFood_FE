@@ -33,18 +33,12 @@ function Footer() {
                                 </a>
                             </li>
                             <li>
-                                <a
-                                    href="/order"
-                                    className="hover:text-yellow-300"
-                                >
+                                <a href="/" className="hover:text-yellow-300">
                                     Order Now
                                 </a>
                             </li>
                             <li>
-                                <a
-                                    href="/contact"
-                                    className="hover:text-yellow-300"
-                                >
+                                <a href="/" className="hover:text-yellow-300">
                                     Contact Us
                                 </a>
                             </li>

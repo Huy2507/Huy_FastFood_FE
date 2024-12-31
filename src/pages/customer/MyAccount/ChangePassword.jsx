@@ -15,6 +15,9 @@ function ChangePassword() {
     const [activeButton, setActiveButton] = useState("changePassword");
     const [isMobile, setIsMobile] = useState(false);
     const [showSidebar, setShowSidebar] = useState(true); // Control sidebar visibility
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     // Check for mobile view
     useEffect(() => {
@@ -87,7 +90,7 @@ function ChangePassword() {
                 )}
 
                 {/* Content Section */}
-                <div className="relative flex-grow p-8 sm:relative">
+                <div className="relative min-h-[500px] flex-grow p-8 sm:relative">
                     {isMobile && (
                         <Sidebar
                             activeButton={activeButton}
@@ -104,38 +107,60 @@ function ChangePassword() {
                             onSubmit={handleChangePassword}
                             className="mt-10 space-y-6 sm:mt-0"
                         >
-                            <div>
+                            <div className="relative">
                                 <label className="block text-lg font-medium">
                                     Mật khẩu cũ:
                                 </label>
                                 <input
-                                    type="password"
+                                    type={showOldPassword ? "text" : "password"}
                                     className="block w-full rounded rounded-b-md border-b-2 border-gray-300 bg-transparent p-2 text-lg text-green-800 placeholder-transparent focus:border-teal-500 focus:outline-none"
                                     value={changePasswordInfo.oldPassword}
                                     name="oldPassword"
                                     onChange={handlePasswordChange}
                                     placeholder="Mật khẩu cũ"
                                 />
+                                <i
+                                    className={`fas ${
+                                        showOldPassword
+                                            ? "fa-eye-slash"
+                                            : "fa-eye"
+                                    } absolute right-3 top-11 cursor-pointer text-gray-400 hover:text-teal-500 dark:text-gray-500 dark:hover:text-teal-400`}
+                                    onClick={() =>
+                                        setShowOldPassword((prev) => !prev)
+                                    }
+                                ></i>
                             </div>
-                            <div>
+                            <div className="relative">
                                 <label className="block text-lg font-medium">
                                     Mật khẩu mới:
                                 </label>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     className="block w-full rounded rounded-b-md border-b-2 border-gray-300 bg-transparent p-2 text-lg text-green-800 placeholder-transparent focus:border-teal-500 focus:outline-none"
                                     value={changePasswordInfo.newPassword}
                                     name="newPassword"
                                     onChange={handlePasswordChange}
                                     placeholder="Mật khẩu mới"
                                 />
+                                <i
+                                    className={`fas ${
+                                        showPassword ? "fa-eye-slash" : "fa-eye"
+                                    } absolute right-3 top-11 cursor-pointer text-gray-400 hover:text-teal-500 dark:text-gray-500 dark:hover:text-teal-400`}
+                                    onClick={() =>
+                                        setShowPassword((prev) => !prev)
+                                    }
+                                ></i>
                             </div>
-                            <div>
+                            <div className="relative">
                                 <label className="block text-lg font-medium">
                                     Xác nhận mật khẩu mới:
                                 </label>
                                 <input
-                                    type="password"
+                                    type={
+                                        showConfirmPassword
+                                            ? "text"
+                                            : "password"
+                                    }
                                     className="block w-full rounded rounded-b-md border-b-2 border-gray-300 bg-transparent p-2 text-lg text-green-800 placeholder-transparent focus:border-teal-500 focus:outline-none"
                                     value={
                                         changePasswordInfo.confirmNewPassword
@@ -144,11 +169,21 @@ function ChangePassword() {
                                     onChange={handlePasswordChange}
                                     placeholder="Xác nhận mật khẩu mới"
                                 />
+                                <i
+                                    className={`fas ${
+                                        showConfirmPassword
+                                            ? "fa-eye-slash"
+                                            : "fa-eye"
+                                    } absolute right-3 top-11 cursor-pointer text-gray-400 hover:text-teal-500 dark:text-gray-500 dark:hover:text-teal-400`}
+                                    onClick={() =>
+                                        setShowConfirmPassword((prev) => !prev)
+                                    }
+                                ></i>
                             </div>
                             <div className="flex items-center justify-center">
                                 <button
                                     type="submit"
-                                    className="mt-6 w-[80%] rounded bg-teal-500 py-2 text-white hover:bg-teal-600 sm:absolute sm:bottom-10 sm:left-24"
+                                    className="absolute bottom-10 left-10 mt-6 w-[80%] rounded bg-teal-500 py-2 text-white hover:bg-teal-600 sm:left-24"
                                     disabled={loading}
                                 >
                                     {loading

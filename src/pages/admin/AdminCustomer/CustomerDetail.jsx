@@ -201,9 +201,9 @@ function CustomerDetail() {
 
                 {activeTab === "order" &&
                     (orders && orders.length > 0 ? (
-                        <div className="relative max-h-[500px] overflow-y-auto">
+                        <div className="relative max-h-[450px] overflow-y-auto">
                             <table className="w-full table-auto border-collapse dark:bg-gray-800 dark:text-white">
-                                <thead className="sticky top-0 bg-orange-200 dark:bg-teal-900">
+                                <thead className="sticky -top-1 bg-orange-200 dark:bg-teal-900">
                                     <tr>
                                         <th className="border px-4 py-2 text-left">
                                             Mã Đơn Hàng

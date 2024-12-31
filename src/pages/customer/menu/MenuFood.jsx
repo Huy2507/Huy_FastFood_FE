@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"; //
+import { toast } from "react-toastify";
+import { useCart } from "../../../components/CartContext";
 import { getFullUrl } from "../../../services/api/axiosInstance";
-import { AddToCartApi } from "../../../services/customerService/Cart";
+import {
+    AddToCartApi,
+    GetCartItemsApi,
+} from "../../../services/customerService/Cart";
 import { MenuApi } from "../../../services/customerService/Menu";
 import FoodDetails from "./FoodDetails";
 
@@ -12,6 +17,7 @@ function MenuFood() {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedFoodId, setSelectedFoodId] = useState(null);
     const categoryRefs = useRef({});
+    const { updateCartCount } = useCart();
     const navigate = useNavigate();
 
     const fetchMenuFood = async () => {
@@ -112,6 +118,22 @@ function MenuFood() {
         };
     }, [foodsByCategory, navigate]);
 
+    const handleAddToCart = async (foodId) => {
+        try {
+            await AddToCartApi(foodId, 1);
+
+            const updatedCart = await GetCartItemsApi();
+            if (Array.isArray(updatedCart.cartItems)) {
+                updateCartCount(updatedCart.cartItems.length);
+            } else {
+                updateCartCount(0);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Không thể thêm món vào giỏ hàng.");
+        }
+    };
+
     return (
         <div className="container mx-auto p-4">
             {/* Input tìm kiếm */}
@@ -153,7 +175,7 @@ function MenuFood() {
                                     className="rounded bg-teal-500 px-4 py-2 pb-2 text-white hover:bg-teal-600 md:rounded-b"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        AddToCartApi(food.foodId, 1);
+                                        handleAddToCart(food.foodId);
                                     }}
                                 >
                                     Thêm vào giỏ hàng
@@ -210,7 +232,7 @@ function MenuFood() {
                                         className="rounded bg-teal-500 px-4 py-2 pb-2 text-white hover:bg-teal-600 md:rounded-b"
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            AddToCartApi(food.foodId, 1);
+                                            handleAddToCart(food.foodId);
                                         }}
                                     >
                                         Thêm vào giỏ hàng

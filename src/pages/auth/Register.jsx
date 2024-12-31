@@ -13,6 +13,8 @@ function Register({ setIsLogin }) {
         phone: "",
         email: "",
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -99,7 +101,7 @@ function Register({ setIsLogin }) {
 
                         <div className="relative mb-6">
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 id="passwordInput"
                                 className="peer block w-full rounded-b-md border-b-2 border-gray-300 bg-transparent px-3 py-2 pr-10 text-sm text-gray-800 placeholder-transparent focus:border-teal-500 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-teal-400"
                                 placeholder="Mật khẩu"
@@ -113,6 +115,18 @@ function Register({ setIsLogin }) {
                             >
                                 Mật khẩu
                             </label>
+                            <i
+                                className={`fas ${
+                                    showPassword ? "fa-eye-slash" : "fa-eye"
+                                } absolute right-3 top-3 cursor-pointer text-gray-400 hover:text-teal-500 dark:text-gray-500 dark:hover:text-teal-400`}
+                                onClick={() => setShowPassword((prev) => !prev)}
+                            ></i>
+                            {register.password &&
+                                register.password.length < 6 && (
+                                    <p className="mt-2 text-sm text-red-500 dark:text-red-400">
+                                        Mật khẩu phải nhiều hơn 6 ký tự
+                                    </p>
+                                )}
                         </div>
 
                         <div className="relative mb-6">
@@ -135,7 +149,7 @@ function Register({ setIsLogin }) {
 
                         <div className="relative mb-6">
                             <input
-                                type="password"
+                                type={showConfirmPassword ? "text" : "password"}
                                 id="confirmPasswordInput"
                                 className="peer block w-full rounded-b-md border-b-2 border-gray-300 bg-transparent px-3 py-2 pr-10 text-sm text-gray-800 placeholder-transparent focus:border-teal-500 focus:outline-none dark:border-gray-600 dark:text-white dark:focus:border-teal-400"
                                 placeholder="Nhập lại mật khẩu"
@@ -149,6 +163,22 @@ function Register({ setIsLogin }) {
                             >
                                 Nhập lại mật khẩu
                             </label>
+                            <i
+                                className={`fas ${
+                                    showConfirmPassword
+                                        ? "fa-eye-slash"
+                                        : "fa-eye"
+                                } absolute right-3 top-3 cursor-pointer text-gray-400 hover:text-teal-500 dark:text-gray-500 dark:hover:text-teal-400`}
+                                onClick={() =>
+                                    setShowConfirmPassword((prev) => !prev)
+                                }
+                            ></i>
+                            {register.confirmpassword != register.password &&
+                                register.confirmpassword.length >= 6 && (
+                                    <p className="mt-2 text-sm text-red-500 dark:text-red-400">
+                                        Không trùng khớp với mật khẩu
+                                    </p>
+                                )}
                         </div>
 
                         <div className="relative mb-6">

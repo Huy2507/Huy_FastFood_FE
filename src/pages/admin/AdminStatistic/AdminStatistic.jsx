@@ -71,6 +71,7 @@ function AdminStatistic() {
             .then((data) => {
                 const labels = data.map((item) => item.date);
                 const revenues = data.map((item) => item.revenue);
+                console.log(data);
                 setOrderRevenueData({
                     labels,
                     datasets: [
@@ -122,7 +123,7 @@ function AdminStatistic() {
         };
         fetchBestSellingCategorys();
     }, [year, month, period]);
-    console.log(popularCategoriesData);
+
     const months = [
         { value: "", label: "Tất cả" },
         { value: "1", label: "Tháng 1" },

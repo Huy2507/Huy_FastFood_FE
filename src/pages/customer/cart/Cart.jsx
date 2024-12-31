@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useCart } from "../../../components/CartContext";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/Navbar";
 import { getFullUrl } from "../../../services/api/axiosInstance";
@@ -21,6 +22,8 @@ function Cart() {
     const [note, setNote] = useState("");
     const [selectedAddress, setSelectedAddress] = useState([]);
     const [expandedItemId, setExpandedItemId] = useState(null);
+    const [PaymentMethod, setPaymentMethod] = useState("COD");
+    const { updateCartCount } = useCart();
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -46,7 +49,13 @@ function Cart() {
         try {
             const response = await GetCartItemsApi();
             setCart(response);
+            if (Array.isArray(response.cartItems)) {
+                updateCartCount(response.cartItems.length);
+            } else {
+                updateCartCount(0);
+            }
         } catch (error) {
+            console.log(error);
             toast.info(error.message || "Đăng nhập trước để xem giỏ hàng!");
             navigate("/Login");
         } finally {
@@ -119,6 +128,25 @@ function Cart() {
         setExpandedItemId(expandedItemId === itemId ? null : itemId); // Toggle details
     };
 
+    const handleSubmitOrder = async () => {
+        try {
+            const isConfirmed = window.confirm(
+                "Bạn có chắc chắn muốn đặt hàng?",
+            );
+            if (!isConfirmed) return;
+
+            await CreateOrderApi(
+                selectedAddress.id,
+                note,
+                cart.totalPrice,
+                PaymentMethod,
+            );
+            updateCart();
+        } catch (error) {
+            toast.error(error.message || "Có lỗi xảy ra khi đặt hàng!");
+        }
+    };
+
     return (
         <div className="flex h-screen flex-col">
             <Navbar />
@@ -169,6 +197,63 @@ function Cart() {
                                 setNote(e.target.value);
                             }}
                         />
+                    </div>
+                    {/* Phương thức thanh toán */}
+                    <h1 className="mb-6 text-2xl font-bold text-teal-700">
+                        Chọn phương thức thanh toán
+                    </h1>
+                    <div className="grid gap-4 md:grid-cols-1">
+                        {/* Card cho COD */}
+                        <div
+                            onClick={() => setPaymentMethod("COD")}
+                            className={`flex cursor-pointer items-center rounded-lg border p-4 shadow-md ${
+                                PaymentMethod === "COD"
+                                    ? "border-teal-500 bg-teal-50"
+                                    : "border-gray-300"
+                            } hover:border-teal-500`}
+                        >
+                            <div className="mr-4">
+                                <img
+                                    src="/cash-on-delivery-outline-icons.jpg"
+                                    alt="Cash on Delivery"
+                                    className="h-12 w-12"
+                                />
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-bold">
+                                    Thanh toán khi nhận hàng (COD)
+                                </h2>
+                                <p className="text-sm text-gray-600">
+                                    Trả tiền mặt khi nhận hàng.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Card cho VNPay */}
+                        <div
+                            onClick={() => setPaymentMethod("VNPay")}
+                            className={`flex cursor-pointer items-center rounded-lg border p-4 shadow-md ${
+                                PaymentMethod === "VNPay"
+                                    ? "border-teal-500 bg-teal-50"
+                                    : "border-gray-300"
+                            } hover:border-teal-500`}
+                        >
+                            <div className="mr-4">
+                                <img
+                                    src="/vnpay-logo-vinadesign-25-12-57-55.jpg"
+                                    alt="VNPay"
+                                    className="h-12 w-12"
+                                />
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-bold">
+                                    Thanh toán qua VNPay
+                                </h2>
+                                <p className="text-sm text-gray-600">
+                                    Dễ dàng thanh toán qua ví VNPay.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -294,16 +379,7 @@ function Cart() {
                             <button
                                 className="mt-4 rounded bg-teal-500 px-6 py-3 text-white hover:bg-teal-600"
                                 onClick={() => {
-                                    const isConfirmed = window.confirm(
-                                        "Bạn có chắc chắn muốn đặt hàng?",
-                                    );
-                                    if (isConfirmed) {
-                                        CreateOrderApi(
-                                            selectedAddress.id,
-                                            note,
-                                        );
-                                        updateCart();
-                                    }
+                                    handleSubmitOrder();
                                 }}
                             >
                                 Đặt hàng

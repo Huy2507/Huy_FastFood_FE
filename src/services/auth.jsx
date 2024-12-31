@@ -51,7 +51,7 @@ export const VerifyResetCodeApi = async ({ email, resetCode }) => {
 export const ResetPasswordApi = async (ResetPasswordData) => {
     try {
         const response = await axiosInstance.post(
-            "/Auth/verify-reset-code",
+            "/Auth/reset-password",
             ResetPasswordData,
         );
         return response.data;

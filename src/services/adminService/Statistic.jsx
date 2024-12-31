@@ -22,8 +22,7 @@ export const AdminGetBestSellingFoods = async ({
                 params: { year, month, period, limit },
             },
         );
-        console.log("year", year);
-        console.log(response.data);
+
         return response.data;
     } catch (error) {
         const message =
@@ -54,7 +53,6 @@ export const AdminGetPopularCategories = async ({
                 params: { year, month, period, limit },
             },
         );
-        console.log(response.data);
         return response.data;
     } catch (error) {
         const message =
