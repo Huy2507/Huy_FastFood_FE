@@ -1,39 +1,73 @@
 import axios from "axios";
 import Cookies from "js-cookie"; // Import js-cookie for managing cookies
+import { useNavigate } from "react-router-dom"; // Để điều hướng
+import { RefreshAccessToken } from "../auth";
 
+// URL gốc của backend
+const API_BASE_URL = "https://localhost:7290";
+
+// Helper để tạo đường dẫn đầy đủ
+export const getFullUrl = (path) =>
+    `${API_BASE_URL}/${path}`.replace(/\/+/g, "/");
+
+// Tạo một instance của axios
 const axiosInstance = axios.create({
-    baseURL: "/api", // Đường dẫn gốc cho tất cả các request
+    baseURL: "/api", // Sử dụng URL gốc
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-// Thêm interceptor để tự động chèn token vào headers
+// Interceptor request để tự động chèn AccessToken
 axiosInstance.interceptors.request.use(
     (config) => {
-        const accessToken = Cookies.get("accessToken"); // Lấy token từ cookies
+        const accessToken = Cookies.get("accessToken");
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    },
+    (error) => Promise.reject(error),
 );
 
-// Thêm interceptor để xử lý lỗi nếu cần
+// Interceptor response để xử lý lỗi 401 và tự động làm mới AccessToken
 axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        console.error("API Error:", error);
+    (response) => response, // Trả về response nếu không có lỗi
+    async (error) => {
+        const originalRequest = error.config;
+
+        // Kiểm tra nếu lỗi là 401 và chưa thử refresh token
+        if (
+            error.response?.status === 401 &&
+            !originalRequest._retry &&
+            Cookies.get("refreshToken")
+        ) {
+            originalRequest._retry = true;
+
+            try {
+                // Gọi API để làm mới token
+                const newAccessToken = await RefreshAccessToken();
+
+                // Gắn token mới vào header và gửi lại request ban đầu
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                return axiosInstance(originalRequest);
+            } catch (refreshError) {
+                console.error("Failed to refresh token:", refreshError);
+
+                // Xóa cookies nếu refresh token thất bại
+                Cookies.remove("accessToken");
+                Cookies.remove("refreshToken");
+
+                // Điều hướng người dùng đến trang đăng nhập
+                const navigate = useNavigate();
+                navigate("/login");
+
+                return Promise.reject(refreshError);
+            }
+        }
+
         return Promise.reject(error);
     },
 );
-
-const API_BASE_URL = "https://localhost:7290"; // URL gốc của backend
-
-export const getFullUrl = (path) =>
-    `${API_BASE_URL}/${path}`.replace(/\/+/g, "/");
 
 export default axiosInstance;

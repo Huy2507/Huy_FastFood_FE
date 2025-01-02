@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Footer from "../../../components/footer";
@@ -91,6 +92,9 @@ function MyAccount() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Helmet>
+                <title>Thông tin tài khoản</title>
+            </Helmet>
             <Navbar />
             <div className={`flex flex-grow ${isMobile ? "flex-col" : ""}`}>
                 {/* Sidebar for Desktop and Mobile */}

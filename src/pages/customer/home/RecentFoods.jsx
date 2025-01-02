@@ -1,11 +1,14 @@
+import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { toast } from "react-toastify";
+import { useCart } from "../../../components/CartContext";
 import { getFullUrl } from "../../../services/api/axiosInstance.js";
 import { CheckAccessTokenApi } from "../../../services/auth.jsx";
+import { GetCartItemsApi } from "../../../services/customerService/Cart";
 import { AddToCartApi } from "../../../services/customerService/Cart.jsx";
 import { RecentFoodsApi } from "../../../services/customerService/Home.jsx";
-import FoodDetails from "../menu/FoodDetails.jsx";
 
 function RecentFoods() {
     const [recentFoods, setRecentFoods] = useState([]);
@@ -13,11 +16,13 @@ function RecentFoods() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [selectedFoodId, setSelectedFoodId] = useState(null);
     const scrollContainerRef = useRef(null);
+    const { updateCartCount } = useCart();
+    const navigate = useNavigate();
 
     // Kiểm tra token khi load component
     useEffect(() => {
         const checkAccessToken = async () => {
-            const accessToken = localStorage.getItem("accessToken");
+            const accessToken = Cookies.get("accessToken");
             if (!accessToken) {
                 setIsAuthenticated(false); // Không có token thì không xác thực
                 return;
@@ -50,6 +55,22 @@ function RecentFoods() {
         fetchRecentFoods();
     }, [isAuthenticated]);
 
+    const handleAddToCart = async (foodId) => {
+        try {
+            await AddToCartApi(foodId, 1);
+
+            const updatedCart = await GetCartItemsApi();
+            if (Array.isArray(updatedCart.cartItems)) {
+                updateCartCount(updatedCart.cartItems.length);
+            } else {
+                updateCartCount(0);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Không thể thêm món vào giỏ hàng.");
+        }
+    };
+
     // Hàm cuộn ngang
     const scroll = (direction) => {
         const container = scrollContainerRef.current;
@@ -65,6 +86,12 @@ function RecentFoods() {
         onSwipedRight: () => scroll("left"),
         trackMouse: true, // Cho phép kéo chuột trên desktop
     });
+
+    useEffect(() => {
+        if (selectedFoodId) {
+            navigate(`/menu/food/${selectedFoodId}`);
+        }
+    }, [selectedFoodId]);
 
     // Nếu đang tải dữ liệu, hiển thị thông báo
     if (loading) return <p>Loading recent orders...</p>;
@@ -120,7 +147,7 @@ function RecentFoods() {
                                             className="rounded bg-teal-500 px-4 py-2 text-white hover:bg-teal-600"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                AddToCartApi(food.foodId, 1);
+                                                handleAddToCart(food.foodId);
                                             }}
                                         >
                                             Thêm
@@ -128,13 +155,6 @@ function RecentFoods() {
                                     </div>
                                 </div>
                             ))}
-                            {/* Hiển thị modal khi có món ăn được chọn */}
-                            {selectedFoodId && (
-                                <FoodDetails
-                                    id={selectedFoodId}
-                                    onClose={() => setSelectedFoodId(null)}
-                                />
-                            )}
                         </div>
 
                         {/* Nút cuộn phải */}

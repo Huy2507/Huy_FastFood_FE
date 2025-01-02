@@ -1,6 +1,7 @@
 import Cookies from "js-cookie"; // Import thư viện js-cookie
 import { jwtDecode } from "jwt-decode";
 import { Fragment, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LoginApi } from "../../services/auth";
@@ -98,6 +99,9 @@ function Login() {
 
     return (
         <Fragment>
+            <Helmet>
+                <title>Đăng Nhập</title>
+            </Helmet>
             <div className="flex h-screen items-center justify-center bg-gradient-to-br from-orange-100 to-lime-100">
                 {isLogin ? (
                     <div className="relative mx-3 grid w-96 grid-cols-1 overflow-hidden rounded-xl border-2 border-black bg-white p-10 shadow-2xl md:w-5/12 md:grid-cols-2">

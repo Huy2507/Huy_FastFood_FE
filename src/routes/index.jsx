@@ -42,6 +42,7 @@ const AppRouter = () => {
                 {/* Menu */}
                 <Route path="/menu">
                     <Route index element={<Menu />} />
+                    <Route path="food/:id" element={<FoodDetails />} />
                     <Route path=":slug" element={<Menu />} />
                     <Route path=":slug/:id" element={<FoodDetails />} />
                 </Route>

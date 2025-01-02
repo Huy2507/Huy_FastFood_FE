@@ -1,7 +1,7 @@
 import Cookies from "js-cookie"; // Import js-cookie for managing cookies
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GetCartItemsApi } from "../services/customerService/Cart";
 import { ListCategoryApi } from "../services/customerService/Home";
@@ -16,6 +16,18 @@ const Navbar = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const { cartCount, updateCartCount } = useCart();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        // Scroll to category section based on URL
+        const categorySlug = location.pathname.split("/")[2]; // Assuming URL format is /menu/:slug
+        if (categorySlug) {
+            const categoryElement = document.getElementById(categorySlug);
+            if (categoryElement) {
+                categoryElement.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    }, [location]);
 
     useEffect(() => {
         // Load danh sách category
@@ -62,7 +74,6 @@ const Navbar = () => {
                 if (data) {
                     updateCartCount(data.cartItems.length);
                 }
-                console.log(data);
             } catch (error) {
                 console.log(error.message);
             }
@@ -137,7 +148,7 @@ const Navbar = () => {
                                         className="px-4 py-2 hover:bg-gray-200"
                                     >
                                         <Link
-                                            to={`/menu/${category.categoryName}`}
+                                            to={`/menu/${category.slug}`}
                                             className="block"
                                         >
                                             {category.categoryName}

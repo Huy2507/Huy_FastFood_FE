@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCart } from "../../../components/CartContext";
@@ -80,6 +81,9 @@ function Cart() {
     if (!cart || !cart.cartItems || cart.cartItems.length === 0) {
         return (
             <div className="flex h-screen flex-col items-center justify-center">
+                <Helmet>
+                    <title>Giỏ hàng của bạn</title>
+                </Helmet>
                 <p className="mb-6 text-lg font-semibold text-gray-600">
                     Giỏ hàng của bạn đang trống.
                 </p>
@@ -149,8 +153,11 @@ function Cart() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Helmet>
+                <title>Giỏ hàng của bạn</title>
+            </Helmet>
             <Navbar />
-            <div className="container mx-auto flex flex-col p-4 md:flex-row">
+            <div className="container mx-auto my-4 flex flex-col p-4 md:flex-row">
                 <div className="w-full md:mr-6 md:w-1/3">
                     <h1 className="mb-6 text-2xl font-bold text-teal-700">
                         Chọn địa chỉ giao hàng
@@ -232,7 +239,7 @@ function Cart() {
                         {/* Card cho VNPay */}
                         <div
                             onClick={() => setPaymentMethod("VNPay")}
-                            className={`flex cursor-pointer items-center rounded-lg border p-4 shadow-md ${
+                            className={`mb-4 flex cursor-pointer items-center rounded-lg border p-4 shadow-md ${
                                 PaymentMethod === "VNPay"
                                     ? "border-teal-500 bg-teal-50"
                                     : "border-gray-300"
@@ -367,7 +374,7 @@ function Cart() {
                     </div>
 
                     {/* Tổng giá giỏ hàng */}
-                    <div className="mt-8 flex justify-end">
+                    <div className="mt-4 flex justify-end">
                         <div className="text-right">
                             <p className="text-lg font-bold text-gray-700">
                                 Tổng cộng:{" "}

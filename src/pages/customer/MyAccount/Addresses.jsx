@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/Navbar";
@@ -87,6 +88,9 @@ function Addresses() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Helmet>
+                <title>Danh sách địa chỉ của bạn</title>
+            </Helmet>
             <Navbar />
             <div className={`flex flex-grow ${isMobile ? "flex-col" : ""}`}>
                 {showSidebar && !isMobile && (

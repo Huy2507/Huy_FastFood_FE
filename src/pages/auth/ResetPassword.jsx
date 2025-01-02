@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ResetPasswordApi } from "../../services/auth";
@@ -69,6 +70,9 @@ function VerifyResetCode() {
 
     return (
         <Fragment>
+            <Helmet>
+                <title>Quên mật khẩu</title>
+            </Helmet>
             <div className="flex h-screen items-center justify-center bg-gradient-to-br from-orange-100 to-lime-100">
                 <div className="relative mx-3 grid w-96 grid-cols-1 overflow-hidden rounded-xl border-2 border-black bg-white p-10 shadow-2xl md:w-5/12 md:grid-cols-2">
                     <h1 className="mb-6 mr-5 text-3xl font-bold text-gray-800">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/Navbar";
@@ -74,6 +75,9 @@ function ChangePassword() {
 
     return (
         <div className="flex h-screen flex-col">
+            <Helmet>
+                <title>Đổi mật khẩu</title>
+            </Helmet>
             <Navbar />
             <div className={`flex flex-grow ${isMobile ? "flex-col" : ""}`}>
                 {/* Sidebar for Desktop and Mobile */}

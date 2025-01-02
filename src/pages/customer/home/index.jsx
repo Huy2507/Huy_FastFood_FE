@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Helmet } from "react-helmet";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/Navbar";
 import BannerList from "./BannerList";
@@ -9,6 +10,9 @@ import RecentFoods from "./RecentFoods";
 function Home() {
     return (
         <div>
+            <Helmet>
+                <title>Trang chủ</title>
+            </Helmet>
             <Navbar />
             <BannerList />
             <RecentFoods />

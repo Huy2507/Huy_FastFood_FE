@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { FavoriteFoodApi } from "../../../services/customerService/Home.jsx";
-import FoodDetails from "../menu/FoodDetails.jsx";
 
 function FavoriteFood() {
     const [favoriteFoods, setFavoriteFoods] = useState([]);
     const [selectedFoodId, setSelectedFoodId] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchFavoriteFoods = async () => {
@@ -18,6 +19,13 @@ function FavoriteFood() {
         };
         fetchFavoriteFoods();
     }, []);
+
+    useEffect(() => {
+        if (selectedFoodId) {
+            navigate(`/menu/food/${selectedFoodId}`);
+        }
+    }, [selectedFoodId]);
+
     return (
         <div className="container mx-auto p-4 pb-7">
             <div className="flex items-center justify-center">
@@ -76,13 +84,6 @@ function FavoriteFood() {
                         </div>
                     </div>
                 ))}
-                {/* Hiển thị modal khi có món ăn được chọn */}
-                {selectedFoodId && (
-                    <FoodDetails
-                        id={selectedFoodId}
-                        onClose={() => setSelectedFoodId(null)}
-                    />
-                )}
             </div>
         </div>
     );

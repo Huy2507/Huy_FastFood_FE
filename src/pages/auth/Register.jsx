@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Fragment, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { RegisterApi } from "../../services/auth";
@@ -57,6 +58,9 @@ function Register({ setIsLogin }) {
 
     return (
         <Fragment>
+            <Helmet>
+                <title>Đăng Ký</title>
+            </Helmet>
             <div className="relative mx-3 grid w-96 grid-cols-1 overflow-hidden rounded-xl border-2 border-black bg-white p-10 shadow-2xl md:w-5/12">
                 <h1 className="mb-6 text-center text-3xl font-bold text-gray-800">
                     Đăng Ký

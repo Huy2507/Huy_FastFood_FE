@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate, useParams } from "react-router-dom"; //
 import { toast } from "react-toastify";
 import { useCart } from "../../../components/CartContext";
@@ -8,7 +9,6 @@ import {
     GetCartItemsApi,
 } from "../../../services/customerService/Cart";
 import { MenuApi } from "../../../services/customerService/Menu";
-import FoodDetails from "./FoodDetails";
 
 function MenuFood() {
     const { slug } = useParams();
@@ -29,6 +29,7 @@ function MenuFood() {
                     (category) => category.foods.length > 0,
                 ),
             ); // Lưu món ăn theo danh mục
+            console.log(response.data.foodsByCategory);
         } catch (error) {
             console.error("Error fetching menu:", error.message);
         }
@@ -80,6 +81,8 @@ function MenuFood() {
     }, [foodsByCategory]);
 
     useEffect(() => {
+        let currentCategoryId = null;
+
         const handleScroll = () => {
             const popularFoodsElement =
                 document.getElementById("popular-foods");
@@ -89,7 +92,26 @@ function MenuFood() {
                     rect.top <= window.innerHeight / 2 &&
                     rect.bottom >= window.innerHeight / 2
                 ) {
-                    navigate("/menu");
+                    if (currentCategoryId !== "popular-foods") {
+                        currentCategoryId = "popular-foods";
+                        navigate("/menu");
+                        document.title = "Thực đơn";
+                        const metaDescription = document.querySelector(
+                            "meta[name='description']",
+                        );
+                        const metaKeywords = document.querySelector(
+                            "meta[name='keywords']",
+                        );
+
+                        if (metaDescription) {
+                            metaDescription.content =
+                                "Khám phá thực đơn các món ăn hấp dẫn.";
+                        }
+                        if (metaKeywords) {
+                            metaKeywords.content =
+                                "thực đơn, món ăn, đồ ăn nhanh";
+                        }
+                    }
                     return;
                 }
             }
@@ -103,9 +125,35 @@ function MenuFood() {
                         rect.top <= window.innerHeight / 2 &&
                         rect.bottom >= window.innerHeight / 2
                     ) {
-                        // Check if the slug exists before navigating
-                        if (category.category.slug) {
-                            navigate(`/menu/${category.category.slug}`);
+                        if (
+                            currentCategoryId !== category.category.categoryId
+                        ) {
+                            currentCategoryId = category.category.categoryId;
+
+                            // Update URL
+                            if (category.category.slug) {
+                                navigate(`/menu/${category.category.slug}`);
+                            }
+
+                            // Update SEO
+                            document.title =
+                                category.category.seoTitle || "Thực đơn";
+                            const metaDescription = document.querySelector(
+                                "meta[name='description']",
+                            );
+                            const metaKeywords = document.querySelector(
+                                "meta[name='keywords']",
+                            );
+
+                            if (metaDescription) {
+                                metaDescription.content =
+                                    category.seoDescription ||
+                                    "Danh sách món ăn hấp dẫn.";
+                            }
+                            if (metaKeywords) {
+                                metaKeywords.content =
+                                    category.seoKeywords || "món ăn";
+                            }
                         }
                     }
                 }
@@ -134,8 +182,17 @@ function MenuFood() {
         }
     };
 
+    useEffect(() => {
+        if (selectedFoodId) {
+            navigate(`/menu/food/${selectedFoodId}`);
+        }
+    }, [selectedFoodId]);
+
     return (
         <div className="container mx-auto p-4">
+            <Helmet>
+                <title>Thực đơn</title>
+            </Helmet>
             {/* Input tìm kiếm */}
             <input
                 type="text"
@@ -183,13 +240,6 @@ function MenuFood() {
                             </div>
                         </div>
                     ))}
-                    {/* Hiển thị modal khi có món ăn được chọn */}
-                    {selectedFoodId && (
-                        <FoodDetails
-                            id={selectedFoodId}
-                            onClose={() => setSelectedFoodId(null)}
-                        />
-                    )}
                 </div>
             </div>
 
@@ -240,12 +290,6 @@ function MenuFood() {
                                 </div>
                             </div>
                         ))}
-                        {selectedFoodId && (
-                            <FoodDetails
-                                id={selectedFoodId}
-                                onClose={() => setSelectedFoodId(null)}
-                            />
-                        )}
                     </div>
 
                     {category.pagination.totalPages > 1 && (

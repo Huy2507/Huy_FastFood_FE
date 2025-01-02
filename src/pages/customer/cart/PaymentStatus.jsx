@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -20,6 +21,9 @@ const PaymentStatus = () => {
 
     return (
         <div className="flex h-screen flex-col items-center justify-center bg-gray-100">
+            <Helmet>
+                <title>Trạng thái thanh toán</title>
+            </Helmet>
             {status === "completed" ? (
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-green-600">
