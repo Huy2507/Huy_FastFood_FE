@@ -40,7 +40,8 @@ axiosInstance.interceptors.response.use(
         if (
             error.response?.status === 401 &&
             !originalRequest._retry &&
-            Cookies.get("refreshToken")
+            Cookies.get("refreshToken") &&
+            Cookies.remove("accessToken")
         ) {
             originalRequest._retry = true;
 

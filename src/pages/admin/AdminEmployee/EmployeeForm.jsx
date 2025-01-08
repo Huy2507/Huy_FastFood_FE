@@ -16,7 +16,7 @@ const EmployeeForm = ({ employeeId, onClose, onSave }) => {
         phone: "",
         email: "",
         hireDate: "",
-        leaveDate: "", // Added leaveDate for update
+        leaveDate: "9999-01-01T00:00:00", // Added leaveDate for update
         roleIds: [], // Always initialize as an array
         isActive: true,
     });
@@ -49,7 +49,8 @@ const EmployeeForm = ({ employeeId, onClose, onSave }) => {
                         phone: employeeData.phone || "",
                         email: employeeData.email || "",
                         hireDate: employeeData.hireDate || "",
-                        leaveDate: employeeData.leaveDate || "", // Set leaveDate
+                        leaveDate:
+                            employeeData.leaveDate || "9999-01-01T00:00:00", // Set leaveDate
                         roleIds: employeeData.roleIds || [], // Ensure roleIds is an array
                         isActive: employeeData.isActive,
                     });

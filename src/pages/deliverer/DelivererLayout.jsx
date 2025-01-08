@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DarkModeToggle from "../../components/DarkModeToggle";
-import Sidebar from "./Sidebar";
+import DelivererSidebar from "./DelivererSidebar";
 
-function AdminLayout() {
+function DelivererLayout() {
     const [isOpen, setIsOpen] = useState(true);
     const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function AdminLayout() {
     return (
         <div className="flex">
             {/* Sidebar */}
-            <Sidebar isOpen={isOpen} />
+            <DelivererSidebar isOpen={isOpen} />
 
             {/* Main Content */}
             <div className="flex-1 bg-gray-100 dark:bg-gray-600">
@@ -50,7 +50,6 @@ function AdminLayout() {
                     >
                         <i className="fa-solid fa-bars"></i>
                     </button>
-
                     <div className="flex flex-row">
                         <DarkModeToggle
                             isDarkMode={isDarkMode}
@@ -74,4 +73,4 @@ function AdminLayout() {
     );
 }
 
-export default AdminLayout;
+export default DelivererLayout;

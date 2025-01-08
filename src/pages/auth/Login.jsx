@@ -55,9 +55,9 @@ function Login() {
                 decodedToken[
                     "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
                 ];
-            console.log(role);
+
             // Hiển thị thông báo thành công
-            if (data.name !== "Unknown") {
+            if (data.name !== "undefined") {
                 toast.success(`Xin chào ${data.name}, đăng nhập thành công!`);
             } else {
                 toast.success(`Xin chào ${userName}, đăng nhập thành công!`);
@@ -75,6 +75,16 @@ function Login() {
                     (Array.isArray(role) && role.includes("Customer"))
                 ) {
                     navigate("/");
+                } else if (
+                    role === "Chef" ||
+                    (Array.isArray(role) && role.includes("Chef"))
+                ) {
+                    navigate("/chef");
+                } else if (
+                    role === "Deliverer" ||
+                    (Array.isArray(role) && role.includes("Deliverer"))
+                ) {
+                    navigate("/deliverer");
                 }
             }, 1000); // 1 giây
         } catch (error) {

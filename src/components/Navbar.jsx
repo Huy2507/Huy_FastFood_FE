@@ -157,6 +157,14 @@ const Navbar = () => {
                                 ))}
                             </ul>
                         </li>
+                        <li className="md:hover:scale-105">
+                            <Link
+                                to="/delivering-order"
+                                className="text-nowrap border-b-2 hover:text-slate-700 md:border-none md:px-6"
+                            >
+                                Đơn Hàng
+                            </Link>
+                        </li>
 
                         {isAdmin && (
                             <li className="md:hover:scale-105">

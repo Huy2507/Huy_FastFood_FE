@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Navbar from "../../components/Navbar";
 import { ForgotPasswordApi } from "../../services/auth";
 
 function ForgotPassword() {
@@ -30,6 +31,7 @@ function ForgotPassword() {
             <Helmet>
                 <title>Quên mật khẩu</title>
             </Helmet>
+            <Navbar />
             <div className="flex h-screen items-center justify-center bg-gradient-to-br from-orange-100 to-lime-100">
                 <div className="relative mx-3 grid w-96 grid-cols-1 overflow-hidden rounded-xl border-2 border-black bg-white p-10 shadow-2xl md:w-5/12 md:grid-cols-2">
                     {/* Form bên trái (Đăng nhập) */}

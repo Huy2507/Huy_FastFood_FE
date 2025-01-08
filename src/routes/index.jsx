@@ -13,7 +13,13 @@ import AdminFood from "../pages/admin/AdminFood/AdminFood";
 import AdminLayout from "../pages/admin/AdminLayout";
 import AdminRole from "../pages/admin/AdminRole/AdminRole";
 import AdminStatistic from "../pages/admin/AdminStatistic/AdminStatistic";
+import ChefLayout from "../pages/chef/ChefLayout";
+import ChefOrder from "../pages/chef/ChefOrder/ChefOrder";
 import PaymentStatus from "../pages/customer/cart/PaymentStatus";
+import OrderList from "../pages/customer/DeliveringOrder/OrderList";
+import CurrentOrder from "../pages/deliverer/Deliverer/CurrentOrder";
+import DelivererOrder from "../pages/deliverer/Deliverer/DelivererOrder";
+import DelivererLayout from "../pages/deliverer/DelivererLayout";
 import ProtectedRoute from "./ProtectedRoute";
 
 const Auth = lazy(() => import("../pages/auth"));
@@ -46,7 +52,7 @@ const AppRouter = () => {
                     <Route path=":slug" element={<Menu />} />
                     <Route path=":slug/:id" element={<FoodDetails />} />
                 </Route>
-
+                <Route path="/delivering-order" element={<OrderList />} />
                 {/* Tài khoản */}
                 <Route path="/my-account">
                     <Route index element={<MyAccount />} />
@@ -96,6 +102,34 @@ const AppRouter = () => {
                     />
                     <Route path="employee" element={<AdminEmployee />} />
                     <Route path="role" element={<AdminRole />} />
+                </Route>
+                {/* Chef Dashboard */}
+                <Route
+                    path="/chef"
+                    element={
+                        <ProtectedRoute
+                            element={ChefLayout}
+                            requiredRole="Chef"
+                        />
+                    }
+                >
+                    <Route index element={<ChefOrder />} />
+                    <Route path="order" element={<ChefOrder />} />
+                    <Route path="food" element={<AdminFood />} />
+                </Route>
+
+                <Route
+                    path="/deliverer"
+                    element={
+                        <ProtectedRoute
+                            element={DelivererLayout}
+                            requiredRole="Deliverer"
+                        />
+                    }
+                >
+                    <Route index element={<DelivererOrder />} />
+                    <Route path="order" element={<DelivererOrder />} />
+                    <Route path="current-order" element={<CurrentOrder />} />
                 </Route>
 
                 {/* Forbidden Page */}
