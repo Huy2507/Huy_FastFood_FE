@@ -36,7 +36,6 @@ const Navbar = () => {
                 const data = await ListCategoryApi(page);
                 setCategories(data.data);
             } catch (error) {
-                toast.error("Không thể tải danh mục.");
                 console.log(error.message);
             }
         };

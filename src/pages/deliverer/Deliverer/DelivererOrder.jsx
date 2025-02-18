@@ -20,7 +20,7 @@ function DelivererOrder() {
             const data = await getCompletedOrders();
             setOrders(data);
         } catch (err) {
-            toast.error(err.message || "Đã xảy ra lỗi");
+            console.log(err.message);
         } finally {
             setLoading(false);
         }

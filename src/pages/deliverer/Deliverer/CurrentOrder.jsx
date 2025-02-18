@@ -54,7 +54,7 @@ function CurrentOrder() {
         return (
             <div className="p-4 dark:bg-gray-600 dark:text-white">
                 <p className="text-center text-xl">
-                    {error || "Không có đơn hàng để hiển thị."}
+                    {"Không có đơn hàng để hiển thị."}
                 </p>
                 <button
                     onClick={() => navigate(-1)}

@@ -6,7 +6,7 @@ export default defineConfig({
     server: {
         proxy: {
             "/api": {
-                target: "https://localhost:7290",
+                target: "http://kyozed-001-site1.mtempurl.com",
                 changeOrigin: true, // Cho phép thay đổi Origin để tránh lỗi CORS
                 secure: false, // Vì sử dụng HTTPS với localhost
             },

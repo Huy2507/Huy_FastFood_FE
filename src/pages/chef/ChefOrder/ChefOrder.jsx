@@ -19,7 +19,7 @@ function ChefOrder() {
             const data = await ChefGetPendingOrders();
             setOrders(data);
         } catch (err) {
-            toast.error(err.message || "Đã xảy ra lỗi");
+            console.log(err.message || "Đã xảy ra lỗi");
         } finally {
             setLoading(false);
         }
