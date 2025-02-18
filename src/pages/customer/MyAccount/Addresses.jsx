@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import {
     DeleteAddressesApi,
-    GetAddressesApi,
+    GetAddressesApi
 } from "../../../services/customerService/Address";
 import AddressForm from "./AddressForm";
 import Sidebar from "./Sidebar";
@@ -64,7 +64,7 @@ function Addresses() {
 
     const handleDelete = async (id) => {
         const isConfirmed = window.confirm(
-            "Are you sure you want to delete this address?",
+            "Are you sure you want to delete this address?"
         );
 
         if (!isConfirmed) return;

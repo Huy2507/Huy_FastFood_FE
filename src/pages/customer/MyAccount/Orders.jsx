@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { GetCustomerOrdersApi } from "../../../services/customerService/Order";
@@ -37,7 +37,7 @@ function Orders() {
         } catch (error) {
             toast.error(
                 error.response?.data?.message ||
-                    "Không thể tải danh sách đơn hàng.",
+                    "Không thể tải danh sách đơn hàng."
             );
             setOrders([]); // Gán mảng trống nếu lỗi xảy ra
         } finally {
@@ -110,7 +110,7 @@ function Orders() {
                                     <p className="text-gray-600">
                                         Thời gian:{" "}
                                         {new Date(
-                                            order.orderDate,
+                                            order.orderDate
                                         ).toLocaleString()}
                                     </p>
                                     <p className="text-gray-600">
@@ -140,7 +140,7 @@ function Orders() {
                                                     >
                                                         <img
                                                             src={getFullUrl(
-                                                                item.imageUrl,
+                                                                item.imageUrl
                                                             )}
                                                             alt={item.foodName}
                                                             className="mr-4 h-12 w-12 rounded"
@@ -209,7 +209,7 @@ function Orders() {
                                                 className="cursor-pointer odd:bg-white even:bg-gray-100 hover:bg-teal-100"
                                                 onClick={() =>
                                                     toggleExpandOrder(
-                                                        order.orderId,
+                                                        order.orderId
                                                     )
                                                 }
                                             >
@@ -218,7 +218,7 @@ function Orders() {
                                                 </td>
                                                 <td className="border px-4 py-2">
                                                     {new Date(
-                                                        order.orderDate,
+                                                        order.orderDate
                                                     ).toLocaleString()}
                                                 </td>
                                                 <td className="border px-4 py-2">
@@ -277,7 +277,7 @@ function Orders() {
                                                                 <tbody>
                                                                     {order.items.map(
                                                                         (
-                                                                            item,
+                                                                            item
                                                                         ) => (
                                                                             <tr
                                                                                 key={
@@ -287,7 +287,7 @@ function Orders() {
                                                                                 <td className="border px-4 py-2">
                                                                                     <img
                                                                                         src={getFullUrl(
-                                                                                            item.imageUrl,
+                                                                                            item.imageUrl
                                                                                         )}
                                                                                         alt={
                                                                                             item.foodName
@@ -317,7 +317,7 @@ function Orders() {
                                                                                     VNĐ
                                                                                 </td>
                                                                             </tr>
-                                                                        ),
+                                                                        )
                                                                     )}
                                                                 </tbody>
                                                             </table>

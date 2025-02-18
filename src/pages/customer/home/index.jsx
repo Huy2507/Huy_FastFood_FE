@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Helmet } from "react-helmet";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import BannerList from "./BannerList";
 import FavoriteFood from "./FavoriteFood";

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCart } from "../../../components/CartContext";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { GetAddressesApi } from "../../../services/customerService/Address";
@@ -11,7 +11,7 @@ import {
     AddToCartApi,
     DecreaseQuantityApi,
     DeleteCartItemApi,
-    GetCartItemsApi,
+    GetCartItemsApi
 } from "../../../services/customerService/Cart";
 import { CreateOrderApi } from "../../../services/customerService/Order";
 import CartItem from "./CartItem";
@@ -35,7 +35,7 @@ function Cart() {
                 setAddresses(response);
                 if (response.length > 0) {
                     setSelectedAddress(
-                        response.find((addr) => addr.isDefault) || response[0],
+                        response.find((addr) => addr.isDefault) || response[0]
                     );
                 }
             } catch (error) {
@@ -107,7 +107,7 @@ function Cart() {
             updateCart();
         } catch (error) {
             toast.error(
-                error.message || "Có lỗi xảy ra khi thay đổi số lượng!",
+                error.message || "Có lỗi xảy ra khi thay đổi số lượng!"
             );
         }
     };
@@ -118,7 +118,7 @@ function Cart() {
             updateCart();
         } catch (error) {
             toast.error(
-                error.message || "Có lỗi xảy ra khi thay đổi số lượng!",
+                error.message || "Có lỗi xảy ra khi thay đổi số lượng!"
             );
         }
     };
@@ -135,7 +135,7 @@ function Cart() {
     const handleSubmitOrder = async () => {
         try {
             const isConfirmed = window.confirm(
-                "Bạn có chắc chắn muốn đặt hàng?",
+                "Bạn có chắc chắn muốn đặt hàng?"
             );
             if (!isConfirmed) return;
 
@@ -143,7 +143,7 @@ function Cart() {
                 selectedAddress.id,
                 note,
                 cart.totalPrice,
-                PaymentMethod,
+                PaymentMethod
             );
             updateCart();
         } catch (error) {
@@ -306,7 +306,7 @@ function Cart() {
                                                     onClick={() =>
                                                         handleQuantityChange(
                                                             item.foodId,
-                                                            -1,
+                                                            -1
                                                         )
                                                     }
                                                     disabled={
@@ -323,7 +323,7 @@ function Cart() {
                                                     onClick={() =>
                                                         handleQuantityChange(
                                                             item.foodId,
-                                                            1,
+                                                            1
                                                         )
                                                     }
                                                 >
@@ -337,7 +337,7 @@ function Cart() {
                                         </td>
                                         <td className="px-4 py-2">
                                             {item.totalPrice.toLocaleString(
-                                                "vi-VN",
+                                                "vi-VN"
                                             )}{" "}
                                             VND
                                         </td>
@@ -345,7 +345,7 @@ function Cart() {
                                             <button
                                                 onClick={() =>
                                                     handleDeleteCartItem(
-                                                        item.foodId,
+                                                        item.foodId
                                                     )
                                                 }
                                             >

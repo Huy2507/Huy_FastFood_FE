@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import {
     MyAccountApi,
-    UpdateMyAccountApi,
+    UpdateMyAccountApi
 } from "../../../services/customerService/MyAccount";
 import Sidebar from "./Sidebar";
 
@@ -15,7 +15,7 @@ function MyAccount() {
     const [updateAccountInfo, setUpdateAccountInfo] = useState({
         name: "",
         phone: "",
-        email: "",
+        email: ""
     });
     const [loading, setLoading] = useState(false);
     const [activeButton, setActiveButton] = useState("editInfo");
@@ -44,12 +44,12 @@ function MyAccount() {
                 setUpdateAccountInfo({
                     name: response.name,
                     phone: response.phone,
-                    email: response.email,
+                    email: response.email
                 });
             } catch (error) {
                 toast.info(
                     error.message ||
-                        "Đăng nhập trước để xem thông tin tài khoản!",
+                        "Đăng nhập trước để xem thông tin tài khoản!"
                 );
                 navigate("/Login");
             }
@@ -62,14 +62,14 @@ function MyAccount() {
         const { name, value } = e.target;
         setUpdateAccountInfo({
             ...updateAccountInfo,
-            [name]: value,
+            [name]: value
         });
     };
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
         const isConfirmed = window.confirm(
-            "Bạn có chắc chắn muốn cập nhật thông tin tài khoản?",
+            "Bạn có chắc chắn muốn cập nhật thông tin tài khoản?"
         );
 
         if (!isConfirmed) return;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { ChangePasswordApi } from "../../../services/customerService/MyAccount";
 import Sidebar from "./Sidebar";
@@ -10,7 +10,7 @@ function ChangePassword() {
     const [changePasswordInfo, setChangePasswordInfo] = useState({
         oldPassword: "",
         newPassword: "",
-        confirmNewPassword: "",
+        confirmNewPassword: ""
     });
     const [loading, setLoading] = useState(false);
     const [activeButton, setActiveButton] = useState("changePassword");
@@ -36,14 +36,14 @@ function ChangePassword() {
         const { name, value } = e.target;
         setChangePasswordInfo({
             ...changePasswordInfo,
-            [name]: value,
+            [name]: value
         });
     };
 
     const handleChangePassword = async (e) => {
         e.preventDefault();
         const isConfirmed = window.confirm(
-            "Bạn có chắc chắn muốn đổi mật khẩu?",
+            "Bạn có chắc chắn muốn đổi mật khẩu?"
         );
 
         if (!isConfirmed) return;
@@ -64,7 +64,7 @@ function ChangePassword() {
             setChangePasswordInfo({
                 oldPassword: "",
                 newPassword: "",
-                confirmNewPassword: "",
+                confirmNewPassword: ""
             });
         } catch (err) {
             toast.error(err.message || "Đổi mật khẩu thất bại");

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import MenuFood from "./MenuFood";
 
