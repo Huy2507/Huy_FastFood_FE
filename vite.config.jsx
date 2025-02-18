@@ -8,12 +8,13 @@ export default defineConfig({
             "/api": {
                 target: "http://kyozed-001-site1.mtempurl.com",
                 changeOrigin: true, // Cho phép thay đổi Origin để tránh lỗi CORS
-                secure: false, // Vì sử dụng HTTPS với localhost
-            },
-        },
+                secure: false // Vì sử dụng HTTPS với localhost
+            }
+        }
     },
     esbuild: {
+        jsx: "react-jsx",
         loader: "jsx", // Sử dụng JSX loader
-        include: /src\/.*\.js$/, // Chỉ định các file `.js` trong thư mục `src`
-    },
+        include: /src\/.*\.js$/ // Chỉ định các file `.js` trong thư mục `src`
+    }
 });
