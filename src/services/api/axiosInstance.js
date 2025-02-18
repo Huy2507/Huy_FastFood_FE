@@ -12,7 +12,7 @@ export const getFullUrl = (path) =>
 
 // Tạo một instance của axios
 const axiosInstance = axios.create({
-    baseURL: "/api", // Sử dụng URL gốc
+    baseURL: `${API_BASE_URL}/api`, // Sử dụng URL gốc
     headers: {
         "Content-Type": "application/json"
     }
