@@ -2,7 +2,7 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import { getCustomerOrders } from "../../../services/customerService/DeliveringOrder";
@@ -138,7 +138,7 @@ function OrderList() {
                                 <div
                                     className="h-4 rounded bg-blue-500"
                                     style={{
-                                        width: `${getOrderProgress(order.status)}%`,
+                                        width: `${getOrderProgress(order.status)}%`
                                     }}
                                 ></div>
                             </div>
