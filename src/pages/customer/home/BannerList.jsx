@@ -11,13 +11,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 const BannerList = () => {
     const [banners, setBanners] = useState([]);
-
     // Fetch banners from API
     useEffect(() => {
         const fetchBanners = async () => {
             try {
                 const data = await ListBanner();
                 setBanners(data);
+                console.log("getFullUrl()");
             } catch (error) {
                 console.log(error.message);
             }
@@ -33,7 +33,7 @@ const BannerList = () => {
                 pagination={{ clickable: true }}
                 autoplay={{
                     delay: 3000, // Thời gian giữa các slide (ms)
-                    disableOnInteraction: false, // Tiếp tục autoplay ngay cả khi người dùng tương tác
+                    disableOnInteraction: false // Tiếp tục autoplay ngay cả khi người dùng tương tác
                 }}
                 loop={banners.length > 1} // Bật loop nếu có nhiều hơn 1 banner
                 slidesPerView={1}

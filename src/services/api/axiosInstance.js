@@ -4,17 +4,16 @@ import { useNavigate } from "react-router-dom"; // Để điều hướng
 import { RefreshAccessToken } from "../auth";
 
 // URL gốc của backend
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
+    /\/$/,
+    ""
+);
 
 // Helper để tạo đường dẫn đầy đủ
 export const getFullUrl = (path) => {
-    // Kiểm tra nếu đường dẫn là tài nguyên hình ảnh hoặc đường dẫn tuyệt đối (bao gồm 'http', 'https')
-    if (path.startsWith("http") || path.startsWith("https")) {
-        return path; // Trả về nguyên đường dẫn tuyệt đối
-    }
-
-    // Đường dẫn tương đối (tức là không bắt đầu với 'http' hoặc 'https')
-    return `${API_BASE_URL}${path}`.replace(/\/+/g, "/");
+    // Bỏ đi các dấu / thừa ở đầu path
+    const cleanPath = path.replace(/^\//, "");
+    return `${API_BASE_URL}/${cleanPath}`.replace(/\/+/g, "/");
 };
 
 // Tạo một instance của axios
