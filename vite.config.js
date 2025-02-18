@@ -11,10 +11,5 @@ export default defineConfig({
                 secure: false // Vì sử dụng HTTPS với localhost
             }
         }
-    },
-    esbuild: {
-        jsx: "react-jsx",
-        loader: "jsx", // Sử dụng JSX loader
-        include: /src\/.*\.js$/ // Chỉ định các file `.js` trong thư mục `src`
     }
 });
