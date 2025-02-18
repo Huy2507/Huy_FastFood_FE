@@ -3,18 +3,18 @@ import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCart } from "../../../components/CartContext";
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import Loading from "../../../components/Loading";
 import Navbar from "../../../components/Navbar";
 import { getFullUrl } from "../../../services/api/axiosInstance";
 import {
     AddToCartFromFoodDetailsApi,
-    GetCartItemsApi,
+    GetCartItemsApi
 } from "../../../services/customerService/Cart";
 import { FoodByIdApi } from "../../../services/customerService/Menu";
 import {
     addReviewApi,
-    getReviewsByFoodApi,
+    getReviewsByFoodApi
 } from "../../../services/customerService/Review";
 
 function FoodDetails() {
@@ -40,13 +40,12 @@ function FoodDetails() {
             try {
                 const response = await GetCartItemsApi();
                 const cartItem = response.cartItems.find(
-                    (item) => item.foodId === parseInt(id),
+                    (item) => item.foodId === parseInt(id)
                 );
                 setQuantity(cartItem ? cartItem.quantity : 0);
             } catch (error) {
                 toast.error(
-                    error.message ||
-                        "Có lỗi xảy ra khi lấy thông tin giỏ hàng!",
+                    error.message || "Có lỗi xảy ra khi lấy thông tin giỏ hàng!"
                 );
             }
         };
@@ -85,7 +84,7 @@ function FoodDetails() {
             foodId: parseInt(id),
             customerId: 1, // Giả sử khách hàng ID là 1 (thay đổi tùy vào logic đăng nhập)
             rating: newRating,
-            comment: newComment,
+            comment: newComment
         };
 
         try {
@@ -106,7 +105,7 @@ function FoodDetails() {
         if (reviews.length === 0) return 0;
         const totalRating = reviews.reduce(
             (acc, review) => acc + review.rating,
-            0,
+            0
         );
         return (totalRating / reviews.length).toFixed(1); // Trả về giá trị trung bình (làm tròn 1 chữ số thập phân)
     };
@@ -165,7 +164,7 @@ function FoodDetails() {
                             className="rounded-full bg-gray-300 px-4 py-2 hover:bg-gray-400"
                             onClick={() =>
                                 setQuantity((prev) =>
-                                    prev > 1 ? prev - 1 : prev,
+                                    prev > 1 ? prev - 1 : prev
                                 )
                             }
                         >
