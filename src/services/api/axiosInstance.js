@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"; // Để điều hướng
 import { RefreshAccessToken } from "../auth";
 
 // URL gốc của backend
-const API_BASE_URL = "https://kyozed-001-site1.mtempurl.com";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Helper để tạo đường dẫn đầy đủ
 export const getFullUrl = (path) =>
@@ -14,8 +14,8 @@ export const getFullUrl = (path) =>
 const axiosInstance = axios.create({
     baseURL: "/api", // Sử dụng URL gốc
     headers: {
-        "Content-Type": "application/json",
-    },
+        "Content-Type": "application/json"
+    }
 });
 
 // Interceptor request để tự động chèn AccessToken
@@ -27,7 +27,7 @@ axiosInstance.interceptors.request.use(
         }
         return config;
     },
-    (error) => Promise.reject(error),
+    (error) => Promise.reject(error)
 );
 
 // Interceptor response để xử lý lỗi 401 và tự động làm mới AccessToken
@@ -68,7 +68,7 @@ axiosInstance.interceptors.response.use(
         }
 
         return Promise.reject(error);
-    },
+    }
 );
 
 export default axiosInstance;
