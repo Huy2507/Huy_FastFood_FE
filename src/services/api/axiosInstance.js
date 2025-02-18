@@ -7,8 +7,15 @@ import { RefreshAccessToken } from "../auth";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Helper để tạo đường dẫn đầy đủ
-export const getFullUrl = (path) =>
-    `${API_BASE_URL}/${path}`.replace(/\/+/g, "/");
+export const getFullUrl = (path) => {
+    // Kiểm tra nếu đường dẫn là tài nguyên hình ảnh hoặc đường dẫn tuyệt đối (bao gồm 'http', 'https')
+    if (path.startsWith("http") || path.startsWith("https")) {
+        return path; // Trả về nguyên đường dẫn tuyệt đối
+    }
+
+    // Đường dẫn tương đối (tức là không bắt đầu với 'http' hoặc 'https')
+    return `${API_BASE_URL}${path}`.replace(/\/+/g, "/");
+};
 
 // Tạo một instance của axios
 const axiosInstance = axios.create({
