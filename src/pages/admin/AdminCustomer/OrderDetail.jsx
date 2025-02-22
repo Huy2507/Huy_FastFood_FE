@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import { AdminGetCustomerOrders } from "../../../services/adminService/Customer";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function OrderDetail() {
     const { id } = useParams();
     const { orderid } = useParams(); // Get the order ID from the URL
@@ -104,7 +104,7 @@ function OrderDetail() {
                                 <td className="mr-3 border object-cover px-2 py-2">
                                     <img
                                         className="h-20 w-20 rounded-md object-cover"
-                                        src={getFullUrl(item.imageUrl)}
+                                        src={`${API_BASE_URL}${item.imageUrl}`}
                                         alt={item.name}
                                     />
                                 </td>

@@ -7,7 +7,7 @@ import {
     LineElement,
     PointElement,
     Title,
-    Tooltip,
+    Tooltip
 } from "chart.js";
 import { useEffect, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
@@ -16,10 +16,10 @@ import {
     AdminGetBestSellingFoods,
     AdminGetOrderCountStatistics,
     AdminGetOrderRevenueStatistics,
-    AdminGetPopularCategories,
+    AdminGetPopularCategories
 } from "../../../services/adminService/Statistic";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // Registering the required elements for Chart.js
 ChartJS.register(
     CategoryScale,
@@ -29,7 +29,7 @@ ChartJS.register(
     PointElement,
     Title,
     Tooltip,
-    Legend,
+    Legend
 );
 
 function AdminStatistic() {
@@ -59,9 +59,9 @@ function AdminStatistic() {
                             data: counts,
                             backgroundColor: "rgba(75, 192, 192, 0.6)",
                             borderColor: "rgba(75, 192, 192, 1)",
-                            borderWidth: 1,
-                        },
-                    ],
+                            borderWidth: 1
+                        }
+                    ]
                 });
             })
             .catch((err) => console.error(err));
@@ -80,9 +80,9 @@ function AdminStatistic() {
                             data: revenues,
                             backgroundColor: "rgba(153, 102, 255, 0.6)",
                             borderColor: "rgba(153, 102, 255, 1)",
-                            borderWidth: 1,
-                        },
-                    ],
+                            borderWidth: 1
+                        }
+                    ]
                 });
             })
             .catch((err) => console.error(err));
@@ -95,7 +95,7 @@ function AdminStatistic() {
                     year,
                     month,
                     period,
-                    limit: 5,
+                    limit: 5
                 });
 
                 setBestSellingFoodsData(bestSellingFood);
@@ -113,7 +113,7 @@ function AdminStatistic() {
                     year,
                     month,
                     period,
-                    limit: 5,
+                    limit: 5
                 });
 
                 setPopularCategoriesData(bestSellingCategory);
@@ -137,7 +137,7 @@ function AdminStatistic() {
         { value: "9", label: "Tháng 9" },
         { value: "10", label: "Tháng 10" },
         { value: "11", label: "Tháng 11" },
-        { value: "12", label: "Tháng 12" },
+        { value: "12", label: "Tháng 12" }
     ];
 
     return (
@@ -208,9 +208,9 @@ function AdminStatistic() {
                                     legend: { position: "top" },
                                     title: {
                                         display: true,
-                                        text: "Số lượng đơn hàng",
-                                    },
-                                },
+                                        text: "Số lượng đơn hàng"
+                                    }
+                                }
                             }}
                         />
                     ) : (
@@ -232,9 +232,9 @@ function AdminStatistic() {
                                     legend: { position: "top" },
                                     title: {
                                         display: true,
-                                        text: "Doanh thu",
-                                    },
-                                },
+                                        text: "Doanh thu"
+                                    }
+                                }
                             }}
                         />
                     ) : (
@@ -286,7 +286,7 @@ function AdminStatistic() {
                                     className="flex flex-row items-center rounded-lg border p-2 dark:bg-gray-700 dark:text-white"
                                 >
                                     <img
-                                        src={getFullUrl(food.imageUrl)}
+                                        src={`${API_BASE_URL}${food.imageUrl}`}
                                         alt={food.foodName}
                                         className="mx-3 mb-2 h-24 w-24 rounded-md object-cover"
                                     />
@@ -319,7 +319,7 @@ function AdminStatistic() {
                                     className="flex flex-row items-center rounded-lg border p-2 dark:bg-gray-700 dark:text-white"
                                 >
                                     <img
-                                        src={getFullUrl(category.imageUrl)}
+                                        src={`${API_BASE_URL}${category.imageUrl}`}
                                         alt={category.categoryName}
                                         className="mb-2 h-24 w-24 rounded-md object-cover"
                                     />

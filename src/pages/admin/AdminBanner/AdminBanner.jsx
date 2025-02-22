@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AdminGetBanners } from "../../../services/adminService/Banner";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import BannerForm from "./BannerForm";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function AdminBanner() {
     const [banners, setBanners] = useState([]);
@@ -56,7 +57,7 @@ function AdminBanner() {
             month: "2-digit",
             day: "2-digit",
             hour: "2-digit",
-            minute: "2-digit",
+            minute: "2-digit"
         });
     };
 
@@ -115,9 +116,7 @@ function AdminBanner() {
                                         <td className="border px-4 py-2">
                                             <img
                                                 className="h-20 rounded-md"
-                                                src={getFullUrl(
-                                                    banner.bannerImg,
-                                                )}
+                                                src={`${API_BASE_URL}${banner.bannerImg}`}
                                                 alt={banner.title}
                                             />
                                         </td>

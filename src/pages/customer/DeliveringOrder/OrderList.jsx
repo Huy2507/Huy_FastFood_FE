@@ -4,10 +4,10 @@ import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import { getCustomerOrders } from "../../../services/customerService/DeliveringOrder";
 import { getOrderProgress } from "./ProgressStatus";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function OrderList() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -161,7 +161,7 @@ function OrderList() {
                                         className="flex items-center space-x-4"
                                     >
                                         <img
-                                            src={getFullUrl(item.imageUrl)}
+                                            src={`${API_BASE_URL}${item.imageUrl}`}
                                             alt={item.name}
                                             className="h-12 w-12 rounded object-cover"
                                         />

@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { useCart } from "../../../components/CartContext";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import { GetAddressesApi } from "../../../services/customerService/Address";
 import {
     AddToCartApi,
@@ -16,6 +15,7 @@ import {
 import { CreateOrderApi } from "../../../services/customerService/Order";
 import CartItem from "./CartItem";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Cart() {
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -291,7 +291,7 @@ function Cart() {
                                     >
                                         <td className="px-4 py-2">
                                             <img
-                                                src={getFullUrl(item.imageUrl)}
+                                                src={`${API_BASE_URL}${item.imageUrl}`}
                                                 alt={item.foodName}
                                                 className="h-20 w-20 rounded-md object-cover"
                                             />

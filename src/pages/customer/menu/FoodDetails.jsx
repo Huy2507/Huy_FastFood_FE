@@ -6,7 +6,6 @@ import { useCart } from "../../../components/CartContext";
 import Footer from "../../../components/Footer";
 import Loading from "../../../components/Loading";
 import Navbar from "../../../components/Navbar";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import {
     AddToCartFromFoodDetailsApi,
     GetCartItemsApi
@@ -17,6 +16,7 @@ import {
     getReviewsByFoodApi
 } from "../../../services/customerService/Review";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function FoodDetails() {
     const { id } = useParams(); // Lấy ID từ URL
     const [foodDetails, setFoodDetails] = useState(null);
@@ -132,7 +132,7 @@ function FoodDetails() {
                 {/* Food Details */}
                 <div className="mb-4 flex items-center justify-center md:mb-0 md:w-1/2">
                     <img
-                        src={getFullUrl(foodDetails.imageUrl)}
+                        src={`${API_BASE_URL}${foodDetails.imageUrl}`}
                         alt={foodDetails.name}
                         className="h-80 w-full transform rounded-lg object-cover shadow-md transition-transform duration-500 hover:scale-105"
                     />

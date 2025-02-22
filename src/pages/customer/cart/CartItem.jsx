@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import {
     AddToCartApi,
     DecreaseQuantityApi,
-    DeleteCartItemApi,
+    DeleteCartItemApi
 } from "../../../services/customerService/Cart";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function CartItem({ item, isExpanded, onToggleDetails, updateCart }) {
     const handleQuantityChange = async (delta) => {
         try {
@@ -18,7 +18,7 @@ function CartItem({ item, isExpanded, onToggleDetails, updateCart }) {
             updateCart(); // Reload cart after updating quantity
         } catch (error) {
             toast.error(
-                error.message || "Có lỗi xảy ra khi thay đổi số lượng!",
+                error.message || "Có lỗi xảy ra khi thay đổi số lượng!"
             );
         }
     };
@@ -29,7 +29,7 @@ function CartItem({ item, isExpanded, onToggleDetails, updateCart }) {
             updateCart(); // Reload cart after deleting item
         } catch (error) {
             toast.error(
-                error.message || "Có lỗi xảy ra khi thay đổi số lượng!",
+                error.message || "Có lỗi xảy ra khi thay đổi số lượng!"
             );
         }
     };
@@ -41,7 +41,7 @@ function CartItem({ item, isExpanded, onToggleDetails, updateCart }) {
                 onClick={onToggleDetails}
             >
                 <img
-                    src={getFullUrl(item.imageUrl)}
+                    src={`${API_BASE_URL}${item.imageUrl}`}
                     alt={item.foodName}
                     className="h-20 w-20 rounded-md object-cover"
                 />
@@ -103,7 +103,7 @@ CartItem.propTypes = {
     item: PropTypes.any.isRequired,
     isExpanded: PropTypes.bool.isRequired,
     onToggleDetails: PropTypes.func.isRequired,
-    updateCart: PropTypes.func.isRequired,
+    updateCart: PropTypes.func.isRequired
 };
 
 export default CartItem;

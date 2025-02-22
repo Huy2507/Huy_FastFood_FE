@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom"; // Để điều hướng
 import { RefreshAccessToken } from "../auth";
 
 // URL gốc của backend
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
-    /\/$/,
-    ""
-);
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Helper để tạo đường dẫn đầy đủ
 export const getFullUrl = (path) => {

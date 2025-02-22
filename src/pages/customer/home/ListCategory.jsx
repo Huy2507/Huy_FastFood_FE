@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import { ListCategoryApi } from "../../../services/customerService/Home.jsx";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function ListCategory() {
     const [categories, setCategories] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -54,7 +54,7 @@ function ListCategory() {
                         onClick={() => handleCategoryClick(category.slug)} // Gọi hàm điều hướng khi click
                     >
                         <img
-                            src={getFullUrl(category.imgUrl)}
+                            src={`${API_BASE_URL}${category.imgUrl}`}
                             alt={category.categoryName}
                             className="h-60 w-full object-cover"
                         />

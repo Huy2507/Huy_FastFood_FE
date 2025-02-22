@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { AdminGetCategories } from "../../../services/adminService/Category";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import CategoryForm from "./CategoryForm"; // Giả sử bạn có một form quản lý Category
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function AdminCategory() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ function AdminCategory() {
 
     const toggleExpandCategory = (categoryId) => {
         setExpandedCategoryId((prev) =>
-            prev === categoryId ? null : categoryId,
+            prev === categoryId ? null : categoryId
         );
     };
 
@@ -129,7 +129,7 @@ function AdminCategory() {
                                         className="cursor-pointer p-3 odd:bg-white even:bg-gray-100 hover:bg-orange-100 dark:odd:bg-gray-800 dark:even:bg-gray-700 dark:hover:bg-gray-600"
                                         onClick={() =>
                                             toggleExpandCategory(
-                                                category.categoryId,
+                                                category.categoryId
                                             )
                                         }
                                     >
@@ -139,9 +139,7 @@ function AdminCategory() {
                                         <td className="mr-3 border object-cover px-2 py-2">
                                             <img
                                                 className="h-20 w-20 rounded-md object-cover"
-                                                src={getFullUrl(
-                                                    category.imgUrl,
-                                                )}
+                                                src={`${API_BASE_URL}${category.imgUrl}`}
                                                 alt={category.categoryName}
                                             />
                                         </td>
@@ -158,7 +156,7 @@ function AdminCategory() {
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 handleEditCategory(
-                                                    category.categoryId,
+                                                    category.categoryId
                                                 );
                                             }}
                                         >

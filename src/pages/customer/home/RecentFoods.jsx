@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { toast } from "react-toastify";
 import { useCart } from "../../../components/CartContext";
-import { getFullUrl } from "../../../services/api/axiosInstance.js";
 import { CheckAccessTokenApi } from "../../../services/auth.jsx";
 import { GetCartItemsApi } from "../../../services/customerService/Cart";
 import { AddToCartApi } from "../../../services/customerService/Cart.jsx";
 import { RecentFoodsApi } from "../../../services/customerService/Home.jsx";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function RecentFoods() {
     const [recentFoods, setRecentFoods] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -77,14 +77,14 @@ function RecentFoods() {
         const scrollAmount = container.offsetWidth / 2; // Cuộn 50% chiều rộng container
         container.scrollBy({
             left: direction === "left" ? -scrollAmount : scrollAmount,
-            behavior: "smooth",
+            behavior: "smooth"
         });
     };
 
     const swipeHandlers = useSwipeable({
         onSwipedLeft: () => scroll("right"),
         onSwipedRight: () => scroll("left"),
-        trackMouse: true, // Cho phép kéo chuột trên desktop
+        trackMouse: true // Cho phép kéo chuột trên desktop
     });
 
     useEffect(() => {
@@ -119,7 +119,7 @@ function RecentFoods() {
                             className="scrollbar-hide flex touch-pan-x snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth"
                             style={{
                                 WebkitOverflowScrolling: "touch",
-                                scrollBehavior: "smooth",
+                                scrollBehavior: "smooth"
                             }}
                         >
                             {recentFoods.map((food, index) => (
@@ -131,7 +131,7 @@ function RecentFoods() {
                                     }
                                 >
                                     <img
-                                        src={getFullUrl(food.imageUrl)}
+                                        src={`${API_BASE_URL}${food.imageUrl}`}
                                         alt={food.name}
                                         className="mb-2 h-36 w-full rounded-lg object-cover md:h-44"
                                     />

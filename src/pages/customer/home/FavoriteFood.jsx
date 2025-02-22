@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import { FavoriteFoodApi } from "../../../services/customerService/Home.jsx";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function FavoriteFood() {
     const [favoriteFoods, setFavoriteFoods] = useState([]);
     const [selectedFoodId, setSelectedFoodId] = useState(null);
@@ -44,7 +44,7 @@ function FavoriteFood() {
                         {/* Hình ảnh hiển thị trước */}
                         <div className="group relative flex h-auto max-h-56 min-h-24 w-1/3 cursor-pointer items-center justify-center overflow-hidden rounded-t-lg shadow-lg md:h-auto md:w-full md:rounded-l-lg lg:rounded-t-lg">
                             <img
-                                src={getFullUrl(favoriteFood.imageUrl)}
+                                src={`${API_BASE_URL}${favoriteFood.imageUrl}`}
                                 alt={favoriteFood.name}
                                 className="h-full w-full object-cover"
                             />

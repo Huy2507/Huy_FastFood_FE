@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getFullUrl } from "../../../services/api/axiosInstance.js";
 import { ListBanner } from "../../../services/customerService/Home.jsx";
 
 // Import Swiper.js
@@ -9,6 +8,7 @@ import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BannerList = () => {
     const [banners, setBanners] = useState([]);
     // Fetch banners from API
@@ -17,14 +17,12 @@ const BannerList = () => {
             try {
                 const data = await ListBanner();
                 setBanners(data);
-                console.log("getFullUrl()");
             } catch (error) {
                 console.log(error.message);
             }
         };
         fetchBanners();
     }, []);
-
     return (
         <div className="banner-container w-full">
             <Swiper
@@ -44,7 +42,7 @@ const BannerList = () => {
                     ? banners.map((banner) => (
                           <SwiperSlide key={banner.id} className="w-full">
                               <img
-                                  src={getFullUrl(banner.bannerImg)}
+                                  src={`${API_BASE_URL}${banner.bannerImg}`}
                                   alt={banner.title || "Banner"}
                                   className="h-auto w-full object-cover" // Tailwind classes for responsive images
                               />

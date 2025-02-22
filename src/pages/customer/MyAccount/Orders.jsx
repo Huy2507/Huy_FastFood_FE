@@ -3,10 +3,10 @@ import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import { GetCustomerOrdersApi } from "../../../services/customerService/Order";
 import Sidebar from "./Sidebar";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Orders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -139,9 +139,7 @@ function Orders() {
                                                         className="flex items-center rounded border p-2 shadow"
                                                     >
                                                         <img
-                                                            src={getFullUrl(
-                                                                item.imageUrl
-                                                            )}
+                                                            src={`${API_BASE_URL}${item.imageUrl}`}
                                                             alt={item.foodName}
                                                             className="mr-4 h-12 w-12 rounded"
                                                         />
@@ -286,9 +284,7 @@ function Orders() {
                                                                             >
                                                                                 <td className="border px-4 py-2">
                                                                                     <img
-                                                                                        src={getFullUrl(
-                                                                                            item.imageUrl
-                                                                                        )}
+                                                                                        src={`${API_BASE_URL}${item.imageUrl}`}
                                                                                         alt={
                                                                                             item.foodName
                                                                                         }

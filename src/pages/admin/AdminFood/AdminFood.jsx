@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify"; // Không cần import ToastContainer nữa
 import { AdminGetAllFood } from "../../../services/adminService/Food";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import FoodForm from "./FoodForm";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function AdminFood() {
     const [foodItems, setFoodItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -177,7 +177,7 @@ function AdminFood() {
                                         <td className="mr-3 border object-cover px-2 py-2">
                                             <img
                                                 className="h-20 w-20 rounded-md object-cover"
-                                                src={getFullUrl(food.imageUrl)}
+                                                src={`${API_BASE_URL}${food.imageUrl}`}
                                                 alt={food.name}
                                             />
                                         </td>
@@ -257,7 +257,7 @@ function AdminFood() {
                                                                 Thời gian tạo:
                                                             </strong>{" "}
                                                             {new Date(
-                                                                food.createdAt,
+                                                                food.createdAt
                                                             ).toLocaleString()}
                                                         </p>
                                                         <p className="text-gray-600 dark:text-gray-400">
@@ -266,7 +266,7 @@ function AdminFood() {
                                                                 cuối:
                                                             </strong>{" "}
                                                             {new Date(
-                                                                food.updatedAt,
+                                                                food.updatedAt
                                                             ).toLocaleString()}
                                                         </p>
                                                     </div>

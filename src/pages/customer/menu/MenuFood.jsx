@@ -3,13 +3,13 @@ import { Helmet } from "react-helmet";
 import { useNavigate, useParams } from "react-router-dom"; //
 import { toast } from "react-toastify";
 import { useCart } from "../../../components/CartContext";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 import {
     AddToCartApi,
-    GetCartItemsApi,
+    GetCartItemsApi
 } from "../../../services/customerService/Cart";
 import { MenuApi } from "../../../services/customerService/Menu";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function MenuFood() {
     const { slug } = useParams();
     const [foodsByCategory, setFoodsByCategory] = useState([]);
@@ -26,8 +26,8 @@ function MenuFood() {
             setPopularFoods(response.data.popularFoods); // Lưu món ăn phổ biến
             setFoodsByCategory(
                 response.data.foodsByCategory.filter(
-                    (category) => category.foods.length > 0,
-                ),
+                    (category) => category.foods.length > 0
+                )
             ); // Lưu món ăn theo danh mục
             console.log(response.data.foodsByCategory);
         } catch (error) {
@@ -42,7 +42,7 @@ function MenuFood() {
             const updatedFoodsByCategory = foodsByCategory.map((category) => {
                 if (category.category.categoryId === categoryId) {
                     const updatedCategory = response.data.foodsByCategory.find(
-                        (cat) => cat.category.categoryId === categoryId,
+                        (cat) => cat.category.categoryId === categoryId
                     );
                     return updatedCategory || category;
                 }
@@ -63,7 +63,7 @@ function MenuFood() {
         if (slug) {
             // Kiểm tra xem slug có trùng với slug trong URL không
             const category = foodsByCategory.find(
-                (cat) => cat.category.slug.toLowerCase() === slug.toLowerCase(), // Sử dụng slug thay vì categoryName
+                (cat) => cat.category.slug.toLowerCase() === slug.toLowerCase() // Sử dụng slug thay vì categoryName
             );
             if (
                 category &&
@@ -74,7 +74,7 @@ function MenuFood() {
                     category.category.categoryId
                 ].scrollIntoView({
                     behavior: "smooth",
-                    block: "start", // Cuộn đến vị trí đầu của phần danh mục
+                    block: "start" // Cuộn đến vị trí đầu của phần danh mục
                 });
             }
         }
@@ -97,10 +97,10 @@ function MenuFood() {
                         navigate("/menu");
                         document.title = "Thực đơn";
                         const metaDescription = document.querySelector(
-                            "meta[name='description']",
+                            "meta[name='description']"
                         );
                         const metaKeywords = document.querySelector(
-                            "meta[name='keywords']",
+                            "meta[name='keywords']"
                         );
 
                         if (metaDescription) {
@@ -139,10 +139,10 @@ function MenuFood() {
                             document.title =
                                 category.category.seoTitle || "Thực đơn";
                             const metaDescription = document.querySelector(
-                                "meta[name='description']",
+                                "meta[name='description']"
                             );
                             const metaKeywords = document.querySelector(
-                                "meta[name='keywords']",
+                                "meta[name='keywords']"
                             );
 
                             if (metaDescription) {
@@ -214,7 +214,7 @@ function MenuFood() {
                             onClick={() => setSelectedFoodId(food.foodId)}
                         >
                             <img
-                                src={getFullUrl(food.imageUrl)}
+                                src={`${API_BASE_URL}${food.imageUrl}`}
                                 alt={food.name}
                                 className="mb-2 h-36 w-1/3 rounded-lg object-cover md:h-44 md:w-full"
                             />
@@ -264,7 +264,7 @@ function MenuFood() {
                                 onClick={() => setSelectedFoodId(food.foodId)}
                             >
                                 <img
-                                    src={getFullUrl(food.imageUrl)}
+                                    src={`${API_BASE_URL}${food.imageUrl}`}
                                     alt={food.name}
                                     className="mb-2 h-36 w-1/3 rounded-t-lg object-cover md:h-44 md:w-full"
                                 />
@@ -299,7 +299,7 @@ function MenuFood() {
                                 onClick={() =>
                                     handlePageChange(
                                         category.category.categoryId,
-                                        category.pagination.currentPage - 1,
+                                        category.pagination.currentPage - 1
                                     )
                                 }
                                 disabled={category.pagination.currentPage === 1}
@@ -316,7 +316,7 @@ function MenuFood() {
                                         onClick={() =>
                                             handlePageChange(
                                                 category.category.categoryId,
-                                                index + 1,
+                                                index + 1
                                             )
                                         }
                                         className={`rounded px-4 py-2 ${
@@ -328,14 +328,14 @@ function MenuFood() {
                                     >
                                         {index + 1}
                                     </button>
-                                ),
+                                )
                             )}
 
                             <button
                                 onClick={() =>
                                     handlePageChange(
                                         category.category.categoryId,
-                                        category.pagination.currentPage + 1,
+                                        category.pagination.currentPage + 1
                                     )
                                 }
                                 disabled={

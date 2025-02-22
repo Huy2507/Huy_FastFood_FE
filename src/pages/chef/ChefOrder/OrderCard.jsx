@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const OrderCard = ({ order, onPin, onUpdateStatus, pinnedOrder }) => {
     return (
         <div className="rounded-lg border bg-white p-4 shadow-md dark:bg-gray-800">
@@ -36,7 +36,7 @@ const OrderCard = ({ order, onPin, onUpdateStatus, pinnedOrder }) => {
                             className="mb-2 flex items-center"
                         >
                             <img
-                                src={getFullUrl(item.imageUrl)}
+                                src={`${API_BASE_URL}${item.imageUrl}`}
                                 alt={item.foodName}
                                 className="h-10 w-10 rounded object-cover"
                             />
@@ -81,13 +81,13 @@ OrderCard.propTypes = {
                 foodName: PropTypes.string.isRequired,
                 quantity: PropTypes.number.isRequired,
                 price: PropTypes.number,
-                totalPrice: PropTypes.number,
-            }),
-        ).isRequired,
+                totalPrice: PropTypes.number
+            })
+        ).isRequired
     }).isRequired,
     onPin: PropTypes.func.isRequired,
     onUpdateStatus: PropTypes.func.isRequired,
-    pinnedOrder: PropTypes.number,
+    pinnedOrder: PropTypes.number
 };
 
 export default OrderCard;

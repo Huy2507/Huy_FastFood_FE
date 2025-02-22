@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import { getFullUrl } from "../../../services/api/axiosInstance";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const DelivererOrderCard = ({ order, onAccept, onComplete }) => {
     console.log(order);
     return (
@@ -29,7 +29,7 @@ const DelivererOrderCard = ({ order, onAccept, onComplete }) => {
                             className="mb-2 flex items-center"
                         >
                             <img
-                                src={getFullUrl(item.imageUrl)}
+                                src={`${API_BASE_URL}${item.imageUrl}`}
                                 alt={item.foodName}
                                 className="h-10 w-10 rounded object-cover"
                             />
@@ -74,12 +74,12 @@ DelivererOrderCard.propTypes = {
                 foodId: PropTypes.number.isRequired,
                 imageUrl: PropTypes.string.isRequired,
                 foodName: PropTypes.string.isRequired,
-                quantity: PropTypes.number.isRequired,
-            }),
-        ).isRequired,
+                quantity: PropTypes.number.isRequired
+            })
+        ).isRequired
     }).isRequired,
     onAccept: PropTypes.func,
-    onComplete: PropTypes.func,
+    onComplete: PropTypes.func
 };
 
 export default DelivererOrderCard;
